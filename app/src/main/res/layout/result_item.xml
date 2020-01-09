@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/queryTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.2"
+        tools:text="query" />
+
+    <TextView
+        android:id="@+id/statusTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/queryTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/queryTv"
+        tools:text="Completed" />
+
+    <TextView
+        android:id="@+id/activeItemsTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/soldItemsTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/queryTv"
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="250" />
+
+    <TextView
+        android:id="@+id/soldItemsTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/activeItemsTv"
+        app:layout_constraintEnd_toStartOf="@+id/avgListedTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/activeItemsTv"
+        app:layout_constraintTop_toTopOf="@+id/activeItemsTv"
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="66" />
+
+    <TextView
+        android:id="@+id/avgListedTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/soldItemsTv"
+        app:layout_constraintEnd_toStartOf="@+id/avgSoldTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/soldItemsTv"
+        app:layout_constraintTop_toTopOf="@+id/soldItemsTv"
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="29.76" />
+
+    <TextView
+        android:id="@+id/avgSoldTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/avgListedTv"
+        app:layout_constraintEnd_toStartOf="@+id/soldRatioTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/avgListedTv"
+        app:layout_constraintTop_toTopOf="@+id/avgListedTv"
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="115.84" />
+
+    <TextView
+        android:id="@+id/soldRatioTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="13.2%"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/avgSoldTv"
+        app:layout_constraintEnd_toStartOf="@+id/curValTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/avgSoldTv"
+        app:layout_constraintTop_toTopOf="@+id/avgSoldTv"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <TextView
+        android:id="@+id/curValTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/soldRatioTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/soldRatioTv"
+        app:layout_constraintTop_toTopOf="@+id/soldRatioTv"
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="130.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

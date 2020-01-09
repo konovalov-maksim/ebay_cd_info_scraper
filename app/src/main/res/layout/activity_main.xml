@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/upcTv"
+        android:id="@+id/upcEt"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -56,7 +56,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/input_queries"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upcTv" />
+        app:layout_constraintTop_toBottomOf="@+id/upcEt" />
 
     <TextView
         android:id="@+id/textView3"
@@ -125,48 +125,50 @@
         app:layout_constraintTop_toTopOf="@+id/itemsLimitTf" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/searchBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/search"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/stopBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemsLimitTf" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/stopBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/convert_upcs"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        android:text="@string/stop"
+        app:layout_constraintBottom_toBottomOf="@+id/searchBtn"
+        app:layout_constraintEnd_toStartOf="@+id/clearBtn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintStart_toEndOf="@+id/searchBtn"
+        app:layout_constraintTop_toTopOf="@+id/searchBtn" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/clearBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/clear"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="@+id/stopBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintStart_toEndOf="@+id/stopBtn"
+        app:layout_constraintTop_toTopOf="@+id/stopBtn" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultsRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button">
+        app:layout_constraintTop_toBottomOf="@+id/searchBtn">
 
     </androidx.recyclerview.widget.RecyclerView>
 
