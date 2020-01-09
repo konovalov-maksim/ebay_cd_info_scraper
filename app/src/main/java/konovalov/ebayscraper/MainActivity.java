@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         sPref = getPreferences(MODE_PRIVATE);
-        appName = getString(R.string.app_name);
+        appName = getString(R.string.ebay_token);
         discogsToken = getString(R.string.discogs_token);
 
         inputQueriesEt = findViewById(R.id.inputQueriesEt);
