@@ -12,20 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/statusTv"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.2"
         tools:text="query" />
 
     <TextView
         android:id="@+id/statusTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/queryTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/queryTv"
+        app:layout_constraintWidth_percent="0.2"
         tools:text="Completed" />
 
     <TextView
@@ -86,14 +88,14 @@
         android:id="@+id/soldRatioTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="13.2%"
         android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="@+id/avgSoldTv"
         app:layout_constraintEnd_toStartOf="@+id/curValTv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/avgSoldTv"
         app:layout_constraintTop_toTopOf="@+id/avgSoldTv"
-        app:layout_constraintWidth_percent="0.16" />
+        app:layout_constraintWidth_percent="0.16"
+        tools:text="13.2%" />
 
     <TextView
         android:id="@+id/curValTv"

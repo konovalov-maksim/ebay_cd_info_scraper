@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import konovalov.ebayscraper.core.Category;
 import konovalov.ebayscraper.core.ItemsSeeker;
@@ -31,13 +33,17 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
 
     private Spinner threadsSpn;
     private Spinner conditionSpn;
+    private Spinner subcategorySpn;
     private EditText itemsLimitEt;
     private EditText inputQueriesEt;
     private EditText upcEt;
+    private TextView categoryTv;
 
     private Button searchBtn;
     private Button stopBtn;
     private Button clearBtn;
+    private Button selectBtn;
+    private Button backBtn;
 
     private ItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
@@ -70,20 +76,29 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
 
         threadsSpn = findViewById(R.id.threadsSpn);
         conditionSpn = findViewById(R.id.conditionSpn);
+        subcategorySpn = findViewById(R.id.subcategorySpn);
         itemsLimitEt = findViewById(R.id.itemsLimitTf);
+        categoryTv = findViewById(R.id.categoryTv);
 
         searchBtn = findViewById(R.id.searchBtn);
         stopBtn = findViewById(R.id.stopBtn);
         clearBtn = findViewById(R.id.clearBtn);
+        selectBtn = findViewById(R.id.selectBtn);
+        backBtn = findViewById(R.id.backBtn);
         setButtonListeners();
 
         adapter = new ResultAdapter(results, this);
         ((RecyclerView) findViewById(R.id.resultsRv)).setAdapter(adapter);
 
+        Category.setAppName(appName);
+        selectCategory("-1");
+
         threadsSpn.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9}));
         conditionSpn.setAdapter(ArrayAdapter.createFromResource(this, R.array.conditions, android.R.layout.simple_spinner_dropdown_item));
 
         stopBtn.setEnabled(false);
+
+
     }
 
     private void setButtonListeners() {
@@ -121,6 +136,16 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
             inputQueriesEt.setText("");
             upcEt.setText("");
         });
+
+        selectBtn.setOnClickListener(v -> {
+            if (subcategorySpn.getSelectedItem() == null) return;
+            String categoryId = category.getChildren().get(subcategorySpn.getSelectedItem().toString());
+            if (categoryId != null) selectCategory(categoryId);
+        });
+
+        backBtn.setOnClickListener(v -> {
+            if (category.getParentId() != null && !category.getParentId().equals("0")) selectCategory(category.getParentId());
+        });
     }
 
     private void clearOutput(){
@@ -146,7 +171,23 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
             results.add(result);
         }
         refreshAdapter();
+    }
 
+    private void selectCategory(String categoryId) {
+        Executors.newSingleThreadExecutor().submit(() -> {
+            category = Category.findById(categoryId);
+            if (category != null) setCategory(category);
+        });
+    }
+
+    private void setCategory(Category category) {
+        this.runOnUiThread(() -> {
+            categoryTv.setText(category.getName());
+            subcategorySpn.setAdapter(new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    new ArrayList<>(category.getChildren().keySet()))
+            );
+        });
     }
 
     public void refreshAdapter(){

@@ -18,10 +18,20 @@
         <item>Used</item>
     </string-array>
 
+    <string name="query">Query</string>
+    <string name="active_found">Active\nitems</string>
+    <string name="sold_found">Sold\nitems</string>
+    <string name="avg_listed">AVG $\nListed</string>
+    <string name="avg_sold">AVG $\nSold</string>
+    <string name="sold_ratio">Sold, %</string>
+    <string name="current_value">Current\nvalue</string>
+
     <string name="search">Search</string>
     <string name="stop">Stop</string>
     <string name="convert_upcs">Convert UPCs</string>
     <string name="clear">Clear</string>
+    <string name="select">Select</string>
+    <string name="back">Back</string>
 
     <string name="no_queries">No queries are specified</string>
     <string name="incorrect_items_limit">Incorrect items limit!</string>
