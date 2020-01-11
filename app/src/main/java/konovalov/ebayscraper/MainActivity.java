@@ -118,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
                 Toast.makeText(this, getString(R.string.incorrect_items_limit), Toast.LENGTH_SHORT).show();
                 return;
             }
-            //Category select here
+            itemsSeeker.setCategoryId(category.getId());
+            resultsSet.clear();
+            results.clear();
             stopBtn.setEnabled(true);
             searchBtn.setEnabled(false);
             itemsSeeker.start();
