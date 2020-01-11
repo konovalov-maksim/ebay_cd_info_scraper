@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements
     private Set<String> resultsSet = new HashSet<>();
     private List<String> notFoundUpcs = new ArrayList<>();
 
-
-
     ResultAdapter adapter;
 
     private SharedPreferences sPref;
@@ -105,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements
         threadsSpn.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9}));
         conditionSpn.setAdapter(ArrayAdapter.createFromResource(this, R.array.conditions, android.R.layout.simple_spinner_dropdown_item));
 
+        sPref = getPreferences(MODE_PRIVATE);
+        itemsLimitEt.setText(String.valueOf(sPref.getInt("itemsLimit", 250)));
+        threadsSpn.setSelection(sPref.getInt("maxThreads", 5));
+
         stopBtn.setEnabled(false);
     }
 
@@ -118,13 +120,19 @@ public class MainActivity extends AppCompatActivity implements
             itemsSeeker = new ItemsSeeker(queries, appName, getCondition(), this);
             itemsSeeker.setLogger(this);
             itemsSeeker.setMaxThreads((int) threadsSpn.getSelectedItem());
+            sPrefEditor = sPref.edit();
+            sPrefEditor.putInt("maxThreads", threadsSpn.getSelectedItemPosition());
             try {
-                if (itemsLimitEt.getText() != null && itemsLimitEt.getText().length() > 0)
-                    itemsSeeker.setItemsLimit(Integer.parseInt(itemsLimitEt.getText().toString()));
+                if (itemsLimitEt.getText() != null && itemsLimitEt.getText().length() > 0) {
+                    int itemsLimit = Integer.parseInt(itemsLimitEt.getText().toString());
+                    sPrefEditor.putInt("itemsLimit", itemsLimit);
+                    itemsSeeker.setItemsLimit(itemsLimit);
+                }
             } catch (NumberFormatException e) {
                 Toast.makeText(this, getString(R.string.incorrect_items_limit), Toast.LENGTH_SHORT).show();
                 return;
             }
+            sPrefEditor.apply();
             itemsSeeker.setCategoryId(category.getId());
             resultsSet.clear();
             results.clear();
