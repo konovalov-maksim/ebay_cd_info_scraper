@@ -27,9 +27,13 @@ import konovalov.ebayscraper.core.ItemsSeeker;
 import konovalov.ebayscraper.core.Logger;
 import konovalov.ebayscraper.core.ResultAdapter;
 import konovalov.ebayscraper.core.UpcConvertor;
+import konovalov.ebayscraper.core.entities.Release;
 import konovalov.ebayscraper.core.entities.Result;
 
-public class MainActivity extends AppCompatActivity implements ItemsSeeker.ResultsLoadingListener, Logger {
+public class MainActivity extends AppCompatActivity implements
+        ItemsSeeker.ResultsLoadingListener,
+        UpcConvertor.ConvertorListener,
+        Logger {
 
     private Spinner threadsSpn;
     private Spinner conditionSpn;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
     private Button clearBtn;
     private Button selectBtn;
     private Button backBtn;
+    private Button convertBtn;
 
     private ItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
@@ -54,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
 
     private List<Result> results = new ArrayList<>();
     private Set<String> resultsSet = new HashSet<>();
+    private List<String> notFoundUpcs = new ArrayList<>();
+
+
 
     ResultAdapter adapter;
 
@@ -85,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
         clearBtn = findViewById(R.id.clearBtn);
         selectBtn = findViewById(R.id.selectBtn);
         backBtn = findViewById(R.id.backBtn);
+        convertBtn = findViewById(R.id.convertBtn);
         setButtonListeners();
 
         adapter = new ResultAdapter(results, this);
@@ -97,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
         conditionSpn.setAdapter(ArrayAdapter.createFromResource(this, R.array.conditions, android.R.layout.simple_spinner_dropdown_item));
 
         stopBtn.setEnabled(false);
-
-
     }
 
     private void setButtonListeners() {
@@ -147,6 +154,23 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
 
         backBtn.setOnClickListener(v -> {
             if (category.getParentId() != null && !category.getParentId().equals("0")) selectCategory(category.getParentId());
+        });
+
+        convertBtn.setOnClickListener(v -> {
+            if (upcEt.getText() == null || upcEt.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.no_upc), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            notFoundUpcs.clear();
+            List<String> upcs = Arrays.stream(upcEt.getText().toString().split("\\r?\\n"))
+                    .distinct()
+                    .filter(u -> u.length() > 0)
+                    .collect(Collectors.toList());
+            convertor = new UpcConvertor(upcs, discogsToken, this);
+            convertor.setLogger(this);
+            log("UPCs conversion started");
+            convertBtn.setEnabled(false);
+            convertor.start();
         });
     }
 
@@ -201,4 +225,28 @@ public class MainActivity extends AppCompatActivity implements ItemsSeeker.Resul
         this.runOnUiThread(() -> stopBtn.setEnabled(false));
         this.runOnUiThread(() -> searchBtn.setEnabled(true));
     }
+
+    @Override
+    public void onUpcConverted(String upc, Release release) {
+        String inputQueries = inputQueriesEt.getText().toString()
+                + (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty() ? "" : "\n")
+                + release.getTitle();
+        this.runOnUiThread(() -> inputQueriesEt.setText(inputQueries));
+    }
+
+    @Override
+    public void onAllUpcConverted() {
+        if (notFoundUpcs.isEmpty()) log("All UPCs converted");
+        else
+            log("UPCs conversion finished. The following UPCs were not found:\n"
+                    + notFoundUpcs.stream().collect(Collectors.joining("\n")));
+        this.runOnUiThread(() -> convertBtn.setEnabled(true));
+    }
+
+    @Override
+    public void onUpcNotFound(String upc) {
+        notFoundUpcs.add(upc);
+    }
+
+
 }

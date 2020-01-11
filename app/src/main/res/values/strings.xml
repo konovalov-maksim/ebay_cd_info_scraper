@@ -28,12 +28,13 @@
 
     <string name="search">Search</string>
     <string name="stop">Stop</string>
-    <string name="convert_upcs">Convert UPCs</string>
+    <string name="convert_upcs">Convert</string>
     <string name="clear">Clear</string>
     <string name="select">Select</string>
     <string name="back">Back</string>
 
     <string name="no_queries">No queries are specified</string>
+    <string name="no_upc">No UPCs are specified</string>
     <string name="incorrect_items_limit">Incorrect items limit!</string>
 
 
