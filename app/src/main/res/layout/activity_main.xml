@@ -6,138 +6,209 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="160dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/upc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/upcEt"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inputCl"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:height="0dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toStartOf="@+id/convertBtn"
-        app:layout_constraintHeight_percent="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/inputQueriesEt"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:height="0dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/input_queries"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upcEt" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="160dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/upc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/items_limit"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectBtn" />
+        <EditText
+            android:id="@+id/upcEt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:height="0dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toStartOf="@+id/convertBtn"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/max_threads"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        <EditText
+            android:id="@+id/inputQueriesEt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:height="0dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/condition"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/input_queries"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcEt" />
 
-    <EditText
-        android:id="@+id/itemsLimitTf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="250"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/items_limit"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectBtn" />
 
-    <Spinner
-        android:id="@+id/conditionSpn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/threadsSpn"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/max_threads"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
 
-    <Spinner
-        android:id="@+id/threadsSpn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/itemsLimitTf"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/itemsLimitTf" />
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/condition"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-    <Button
+        <EditText
+            android:id="@+id/itemsLimitTf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="250"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <Spinner
+            android:id="@+id/conditionSpn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/threadsSpn"
+            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <Spinner
+            android:id="@+id/threadsSpn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/itemsLimitTf"
+            app:layout_constraintEnd_toEndOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/itemsLimitTf" />
+
+        <TextView
+            android:id="@+id/catLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/category"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputQueriesEt" />
+
+        <TextView
+            android:id="@+id/categoryTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/catLabelTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/catLabelTv"
+            app:layout_constraintTop_toTopOf="@+id/catLabelTv"
+            tools:text="root" />
+
+        <Spinner
+            android:id="@+id/subcategorySpn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/selectBtn"
+            app:layout_constraintEnd_toStartOf="@+id/selectBtn"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/selectBtn" />
+
+        <ImageButton
+            android:id="@+id/convertBtn"
+            style="@style/small_btn"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/convert"
+            app:layout_constraintBottom_toBottomOf="@+id/upcEt"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/selectBtn"
+            style="@style/small_btn"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/select"
+            android:text="@string/select"
+            app:layout_constraintEnd_toStartOf="@+id/backBtn"
+            app:layout_constraintTop_toBottomOf="@+id/catLabelTv" />
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            style="@style/small_btn"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/back"
+            android:text="@string/back"
+            app:layout_constraintBottom_toBottomOf="@+id/selectBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/selectBtn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
         android:id="@+id/searchBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/simple_btn"
         android:layout_marginStart="8dp"
+        android:src="@drawable/search"
         android:text="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/stopBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemsLimitTf" />
+        app:layout_constraintTop_toBottomOf="@+id/inputCl" />
 
-    <Button
+    <ImageButton
         android:id="@+id/stopBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/simple_btn"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:src="@drawable/stop"
         android:text="@string/stop"
         app:layout_constraintBottom_toBottomOf="@+id/searchBtn"
         app:layout_constraintEnd_toStartOf="@+id/clearBtn"
@@ -145,174 +216,133 @@
         app:layout_constraintStart_toEndOf="@+id/searchBtn"
         app:layout_constraintTop_toTopOf="@+id/searchBtn" />
 
-    <Button
+    <ImageButton
         android:id="@+id/clearBtn"
+        style="@style/simple_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:src="@drawable/clear"
         android:text="@string/clear"
         app:layout_constraintBottom_toBottomOf="@+id/stopBtn"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/minimizeBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/stopBtn"
         app:layout_constraintTop_toTopOf="@+id/stopBtn" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resultsRv"
+    <ImageButton
+        android:id="@+id/minimizeBtn"
+        style="@style/simple_btn"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/up"
+        android:text="@string/minimize"
+        app:layout_constraintBottom_toBottomOf="@+id/clearBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/clearBtn"
+        app:layout_constraintTop_toTopOf="@+id/clearBtn" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outputCl"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/col1"
-        tools:listitem="@layout/result_item">
+        app:layout_constraintTop_toBottomOf="@id/searchBtn">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/col1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/active_found"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/col2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/active_found"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/col2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBtn"
-        app:layout_constraintWidth_percent="0.16" />
+        <TextView
+            android:id="@+id/col2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sold_found"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col1"
+            app:layout_constraintEnd_toStartOf="@+id/col3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col1"
+            app:layout_constraintTop_toTopOf="@+id/col1"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sold_found"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/col1"
-        app:layout_constraintEnd_toStartOf="@+id/col3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/col1"
-        app:layout_constraintTop_toTopOf="@+id/col1"
-        app:layout_constraintWidth_percent="0.16" />
+        <TextView
+            android:id="@+id/col3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/avg_listed"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col2"
+            app:layout_constraintEnd_toStartOf="@+id/col4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col2"
+            app:layout_constraintTop_toTopOf="@+id/col2"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/avg_listed"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/col2"
-        app:layout_constraintEnd_toStartOf="@+id/col4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/col2"
-        app:layout_constraintTop_toTopOf="@+id/col2"
-        app:layout_constraintWidth_percent="0.16" />
+        <TextView
+            android:id="@+id/col4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/avg_sold"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col3"
+            app:layout_constraintEnd_toStartOf="@+id/col5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col3"
+            app:layout_constraintTop_toTopOf="@+id/col3"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/avg_sold"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/col3"
-        app:layout_constraintEnd_toStartOf="@+id/col5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/col3"
-        app:layout_constraintTop_toTopOf="@+id/col3"
-        app:layout_constraintWidth_percent="0.16" />
+        <TextView
+            android:id="@+id/col5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sold_ratio"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col4"
+            app:layout_constraintEnd_toStartOf="@+id/col6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col4"
+            app:layout_constraintTop_toTopOf="@+id/col4"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sold_ratio"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/col4"
-        app:layout_constraintEnd_toStartOf="@+id/col6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/col4"
-        app:layout_constraintTop_toTopOf="@+id/col4"
-        app:layout_constraintWidth_percent="0.16" />
+        <TextView
+            android:id="@+id/col6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/current_value"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col5"
+            app:layout_constraintTop_toTopOf="@+id/col5"
+            app:layout_constraintWidth_percent="0.16" />
 
-    <TextView
-        android:id="@+id/col6"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/current_value"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/col5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/col5"
-        app:layout_constraintTop_toTopOf="@+id/col5"
-        app:layout_constraintWidth_percent="0.16" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resultsRv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/col1"
+            tools:listitem="@layout/result_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/catLabelTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/category"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputQueriesEt" />
 
-    <TextView
-        android:id="@+id/categoryTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/catLabelTv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/catLabelTv"
-        app:layout_constraintTop_toTopOf="@+id/catLabelTv"
-        tools:text="root" />
-
-    <Spinner
-        android:id="@+id/subcategorySpn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/selectBtn"
-        app:layout_constraintEnd_toStartOf="@+id/selectBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/selectBtn" />
-
-    <Button
-        android:id="@+id/selectBtn"
-        style="@style/small_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/select"
-        app:layout_constraintEnd_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/catLabelTv" />
-
-    <Button
-        android:id="@+id/backBtn"
-        style="@style/small_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@string/back"
-        app:layout_constraintBottom_toBottomOf="@+id/selectBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/selectBtn" />
-
-    <Button
-        android:id="@+id/convertBtn"
-        style="@style/small_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/convert_upcs"
-        app:layout_constraintBottom_toBottomOf="@+id/upcEt"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

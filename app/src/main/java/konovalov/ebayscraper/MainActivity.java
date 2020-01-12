@@ -1,15 +1,18 @@
 package konovalov.ebayscraper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,18 +46,20 @@ public class MainActivity extends AppCompatActivity implements
     private EditText upcEt;
     private TextView categoryTv;
 
-    private Button searchBtn;
-    private Button stopBtn;
-    private Button clearBtn;
-    private Button selectBtn;
-    private Button backBtn;
-    private Button convertBtn;
+    private ImageButton searchBtn;
+    private ImageButton stopBtn;
+    private ImageButton clearBtn;
+    private ImageButton selectBtn;
+    private ImageButton backBtn;
+    private ImageButton convertBtn;
+    private ImageButton minimizeBtn;
 
     private ItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
     private String appName;
     private String discogsToken;
     private Category category;
+    private boolean isMinimized;
 
 
     private List<Result> results = new ArrayList<>();
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements
         selectBtn = findViewById(R.id.selectBtn);
         backBtn = findViewById(R.id.backBtn);
         convertBtn = findViewById(R.id.convertBtn);
+        minimizeBtn = findViewById(R.id.minimizeBtn);
         setButtonListeners();
 
         adapter = new ResultAdapter(results, this);
@@ -106,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements
         sPref = getPreferences(MODE_PRIVATE);
         itemsLimitEt.setText(String.valueOf(sPref.getInt("itemsLimit", 250)));
         threadsSpn.setSelection(sPref.getInt("maxThreads", 5));
+
+        setMinimized(false);
 
         stopBtn.setEnabled(false);
     }
@@ -138,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements
             results.clear();
             stopBtn.setEnabled(true);
             searchBtn.setEnabled(false);
+            setMinimized(true);
             itemsSeeker.start();
         });
 
@@ -180,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements
             convertBtn.setEnabled(false);
             convertor.start();
         });
+
+        minimizeBtn.setOnClickListener(v ->setMinimized(!isMinimized));
     }
 
     private void clearOutput(){
@@ -196,15 +207,6 @@ public class MainActivity extends AppCompatActivity implements
         if (conditionSpn.getSelectedItem().equals("New")) return ItemsSeeker.Condition.NEW;
         if (conditionSpn.getSelectedItem().equals("Used")) return ItemsSeeker.Condition.USED;
         return ItemsSeeker.Condition.ALL;
-    }
-
-    @Override
-    public void onResultReceived(Result result) {
-        if (!resultsSet.contains(result.getQuery())) {
-            resultsSet.add(result.getQuery());
-            results.add(result);
-        }
-        refreshAdapter();
     }
 
     private void selectCategory(String categoryId) {
@@ -224,8 +226,29 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    public void refreshAdapter(){
+    private void refreshAdapter(){
         this.runOnUiThread(() -> adapter.notifyDataSetChanged());
+    }
+
+    public void setMinimized(boolean isMinimized) {
+        this.isMinimized = isMinimized;
+        ConstraintLayout inputCl = findViewById(R.id.inputCl);
+        if (isMinimized) {
+            inputCl.setVisibility(View.GONE);
+            minimizeBtn.setImageResource(R.drawable.down);
+        } else {
+            inputCl.setVisibility(View.VISIBLE);
+            minimizeBtn.setImageResource(R.drawable.up);
+        }
+    }
+
+    @Override
+    public void onResultReceived(Result result) {
+        if (!resultsSet.contains(result.getQuery())) {
+            resultsSet.add(result.getQuery());
+            results.add(result);
+        }
+        refreshAdapter();
     }
 
     @Override
