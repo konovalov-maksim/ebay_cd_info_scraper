@@ -4,13 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -234,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements
     public void setMinimized(boolean isMinimized) {
         this.isMinimized = isMinimized;
         ConstraintLayout inputCl = findViewById(R.id.inputCl);
+
         if (isMinimized) {
             inputCl.setVisibility(View.GONE);
             minimizeBtn.setImageResource(R.drawable.down);
@@ -280,5 +288,9 @@ public class MainActivity extends AppCompatActivity implements
         notFoundUpcs.add(upc);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (!isMinimized) super.onBackPressed();
+        else setMinimized(false);
+    }
 }
