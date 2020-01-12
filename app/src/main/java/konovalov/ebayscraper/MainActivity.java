@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements
             searchBtn.setEnabled(true);
             inputQueriesEt.setText("");
             upcEt.setText("");
+            setMinimized(false);
         });
 
         selectBtn.setOnClickListener(v -> {

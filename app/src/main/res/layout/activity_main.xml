@@ -196,6 +196,7 @@
         android:id="@+id/searchBtn"
         style="@style/simple_btn"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/search"
         android:text="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/stopBtn"
@@ -245,6 +246,9 @@
         android:id="@+id/outputCl"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -252,6 +256,7 @@
 
         <TextView
             android:id="@+id/col1"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -266,6 +271,7 @@
 
         <TextView
             android:id="@+id/col2"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/sold_found"
@@ -279,6 +285,7 @@
 
         <TextView
             android:id="@+id/col3"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/avg_listed"
@@ -292,6 +299,7 @@
 
         <TextView
             android:id="@+id/col4"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/avg_sold"
@@ -305,6 +313,7 @@
 
         <TextView
             android:id="@+id/col5"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/sold_ratio"
@@ -318,6 +327,7 @@
 
         <TextView
             android:id="@+id/col6"
+            style="@style/col_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/current_value"
@@ -333,7 +343,8 @@
             android:id="@+id/resultsRv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
