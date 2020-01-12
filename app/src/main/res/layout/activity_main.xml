@@ -27,30 +27,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/upcEt"
+        <ProgressBar
+            android:id="@+id/upcPb"
+            style="?android:attr/progressBarStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:height="0dp"
-            android:ems="10"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/convertBtn"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@+id/convertBtn"
+            app:layout_constraintStart_toStartOf="@+id/convertBtn" />
+
+        <ImageButton
+            android:id="@+id/convertBtn"
+            style="@style/small_btn"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/convert"
+            app:layout_constraintBottom_toBottomOf="@+id/upcEt"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/upcEt"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="start|top"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toStartOf="@+id/convertBtn"
-            app:layout_constraintHeight_percent="0.25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <EditText
             android:id="@+id/inputQueriesEt"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="90dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:height="0dp"
-            android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +81,18 @@
             android:layout_marginStart="8dp"
             android:text="@string/input_queries"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upcEt" />
+            app:layout_constraintTop_toBottomOf="@+id/upcEt"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/optionsCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputCl">
 
         <TextView
             android:id="@+id/textView3"
@@ -109,11 +136,11 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="250"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:text="250" />
 
         <Spinner
             android:id="@+id/conditionSpn"
@@ -140,7 +167,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/category"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputQueriesEt" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/categoryTv"
@@ -166,13 +193,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/selectBtn" />
 
-        <ImageButton
-            android:id="@+id/convertBtn"
-            style="@style/small_btn"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/convert"
-            app:layout_constraintBottom_toBottomOf="@+id/upcEt"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <ProgressBar
+            android:id="@+id/categoryPb"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/selectBtn"
+            app:layout_constraintEnd_toEndOf="@+id/subcategorySpn"
+            app:layout_constraintStart_toStartOf="@+id/subcategorySpn"
+            app:layout_constraintTop_toTopOf="@+id/selectBtn" />
 
         <ImageButton
             android:id="@+id/selectBtn"
@@ -201,19 +232,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/search"
-        android:text="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/stopBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputCl" />
+        app:layout_constraintTop_toBottomOf="@+id/optionsCl" />
 
     <ImageButton
         android:id="@+id/stopBtn"
         style="@style/simple_btn"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:src="@drawable/stop"
-        android:text="@string/stop"
         app:layout_constraintBottom_toBottomOf="@+id/searchBtn"
         app:layout_constraintEnd_toStartOf="@+id/clearBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -223,14 +251,24 @@
     <ImageButton
         android:id="@+id/clearBtn"
         style="@style/simple_btn"
-        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
         android:src="@drawable/clear"
-        android:text="@string/clear"
         app:layout_constraintBottom_toBottomOf="@+id/stopBtn"
-        app:layout_constraintEnd_toStartOf="@id/minimizeBtn"
+        app:layout_constraintEnd_toStartOf="@id/optionsBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/stopBtn"
         app:layout_constraintTop_toTopOf="@+id/stopBtn" />
+
+    <ImageButton
+        android:id="@+id/optionsBtn"
+        style="@style/simple_btn"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/clearBtn"
+        app:layout_constraintEnd_toStartOf="@id/minimizeBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/clearBtn"
+        app:layout_constraintTop_toTopOf="@+id/clearBtn"
+        app:srcCompat="@drawable/options" />
 
     <ImageButton
         android:id="@+id/minimizeBtn"
@@ -238,12 +276,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/up"
-        android:text="@string/minimize"
-        app:layout_constraintBottom_toBottomOf="@+id/clearBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/optionsBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/clearBtn"
-        app:layout_constraintTop_toTopOf="@+id/clearBtn" />
+        app:layout_constraintStart_toEndOf="@id/optionsBtn"
+        app:layout_constraintTop_toTopOf="@+id/optionsBtn" />
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/outputCl"
@@ -362,6 +401,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerBgView"
             tools:listitem="@layout/result_item" />
+
+        <ProgressBar
+            android:id="@+id/resultsPb"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/resultsRv"
+            app:layout_constraintEnd_toEndOf="@+id/resultsRv"
+            app:layout_constraintStart_toStartOf="@+id/resultsRv"
+            app:layout_constraintTop_toTopOf="@+id/resultsRv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

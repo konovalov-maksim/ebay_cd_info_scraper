@@ -4,22 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionManager;
+
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,13 +48,20 @@ public class MainActivity extends AppCompatActivity implements
     private EditText upcEt;
     private TextView categoryTv;
 
+    private ProgressBar upcPb;
+    private ProgressBar categoryPb;
+    private ProgressBar resultsPb;
+
     private ImageButton searchBtn;
     private ImageButton stopBtn;
     private ImageButton clearBtn;
+    private ImageButton optionsBtn;
+    private ImageButton minimizeBtn;
     private ImageButton selectBtn;
     private ImageButton backBtn;
     private ImageButton convertBtn;
-    private ImageButton minimizeBtn;
+
+    private ConstraintLayout optionsCl;
 
     private ItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
@@ -98,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements
         itemsLimitEt = findViewById(R.id.itemsLimitTf);
         categoryTv = findViewById(R.id.categoryTv);
 
+        upcPb = findViewById(R.id.upcPb);
+        categoryPb = findViewById(R.id.categoryPb);
+        resultsPb = findViewById(R.id.resultsPb);
+        upcPb.setVisibility(View.INVISIBLE);
+        categoryPb.setVisibility(View.INVISIBLE);
+        resultsPb.setVisibility(View.INVISIBLE);
+
         searchBtn = findViewById(R.id.searchBtn);
         stopBtn = findViewById(R.id.stopBtn);
         clearBtn = findViewById(R.id.clearBtn);
@@ -105,7 +114,11 @@ public class MainActivity extends AppCompatActivity implements
         backBtn = findViewById(R.id.backBtn);
         convertBtn = findViewById(R.id.convertBtn);
         minimizeBtn = findViewById(R.id.minimizeBtn);
+        optionsBtn = findViewById(R.id.optionsBtn);
         setButtonListeners();
+
+        optionsCl = findViewById(R.id.optionsCl);
+        optionsCl.setVisibility(View.GONE);
 
         adapter = new ResultAdapter(results, this);
         ((RecyclerView) findViewById(R.id.resultsRv)).setAdapter(adapter);
@@ -154,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements
             stopBtn.setEnabled(true);
             searchBtn.setEnabled(false);
             setMinimized(true);
+            resultsPb.setVisibility(View.VISIBLE);
             itemsSeeker.start();
         });
 
@@ -195,7 +209,15 @@ public class MainActivity extends AppCompatActivity implements
             convertor.setLogger(this);
             log("UPCs conversion started");
             convertBtn.setEnabled(false);
+            upcPb.setVisibility(View.VISIBLE);
             convertor.start();
+        });
+
+        optionsBtn.setOnClickListener(v -> {
+            if (optionsCl.getVisibility() == View.VISIBLE)
+                optionsCl.setVisibility(View.GONE);
+            else
+                optionsCl.setVisibility(View.VISIBLE);
         });
 
         minimizeBtn.setOnClickListener(v ->setMinimized(!isMinimized));
@@ -218,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void selectCategory(String categoryId) {
+        categoryPb.setVisibility(View.VISIBLE);
         Executors.newSingleThreadExecutor().submit(() -> {
             category = Category.findById(categoryId);
             if (category != null) setCategory(category);
@@ -227,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setCategory(Category category) {
         this.runOnUiThread(() -> {
             categoryTv.setText(category.getName());
+            categoryPb.setVisibility(View.INVISIBLE);
             subcategorySpn.setAdapter(new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item,
                     new ArrayList<>(category.getChildren().keySet()))
@@ -244,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (isMinimized) {
             inputCl.setVisibility(View.GONE);
+            optionsCl.setVisibility(View.GONE);
             minimizeBtn.setImageResource(R.drawable.down);
         } else {
             inputCl.setVisibility(View.VISIBLE);
@@ -262,8 +287,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onAllResultsReceived() {
-        this.runOnUiThread(() -> stopBtn.setEnabled(false));
-        this.runOnUiThread(() -> searchBtn.setEnabled(true));
+        this.runOnUiThread(() -> {
+            stopBtn.setEnabled(false);
+            searchBtn.setEnabled(true);
+            resultsPb.setVisibility(View.INVISIBLE);
+        });
     }
 
     @Override
@@ -280,7 +308,10 @@ public class MainActivity extends AppCompatActivity implements
         else
             log("UPCs conversion finished. The following UPCs were not found:\n"
                     + notFoundUpcs.stream().collect(Collectors.joining("\n")));
-        this.runOnUiThread(() -> convertBtn.setEnabled(true));
+        this.runOnUiThread(() -> {
+            convertBtn.setEnabled(true);
+            upcPb.setVisibility(View.INVISIBLE);
+        });
     }
 
     @Override
