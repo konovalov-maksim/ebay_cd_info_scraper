@@ -30,13 +30,20 @@
         <ProgressBar
             android:id="@+id/upcPb"
             style="?android:attr/progressBarStyle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/upcEt"
+            app:layout_constraintEnd_toEndOf="@+id/upcEt"
+            app:layout_constraintStart_toStartOf="@+id/upcEt"
+            app:layout_constraintTop_toTopOf="@+id/upcEt" />
+
+        <ImageButton
+            android:id="@+id/scanBtn"
+            style="@style/small_btn"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/camera"
             app:layout_constraintBottom_toTopOf="@+id/convertBtn"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@+id/convertBtn"
             app:layout_constraintStart_toStartOf="@+id/convertBtn" />
 

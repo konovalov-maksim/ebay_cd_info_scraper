@@ -2,11 +2,16 @@ package konovalov.ebayscraper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements
         ItemsSeeker.ResultsLoadingListener,
         UpcConvertor.ConvertorListener,
         Logger {
+    private static final int ZBAR_CAMERA_PERMISSION = 1;
+    private Class<?> mClss;
 
     private Spinner threadsSpn;
     private Spinner conditionSpn;
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements
     private ImageButton selectBtn;
     private ImageButton backBtn;
     private ImageButton convertBtn;
+    private ImageButton scanBtn;
 
     private ConstraintLayout optionsCl;
 
@@ -115,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements
         convertBtn = findViewById(R.id.convertBtn);
         minimizeBtn = findViewById(R.id.minimizeBtn);
         optionsBtn = findViewById(R.id.optionsBtn);
+        scanBtn = findViewById(R.id.scanBtn);
         setButtonListeners();
 
         optionsCl = findViewById(R.id.optionsCl);
@@ -220,7 +229,9 @@ public class MainActivity extends AppCompatActivity implements
                 optionsCl.setVisibility(View.VISIBLE);
         });
 
-        minimizeBtn.setOnClickListener(v ->setMinimized(!isMinimized));
+        minimizeBtn.setOnClickListener(v -> setMinimized(!isMinimized));
+
+        scanBtn.setOnClickListener(v -> launchActivity(ScannerActivity.class));
     }
 
     private void clearOutput(){
@@ -323,5 +334,33 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (!isMinimized) super.onBackPressed();
         else setMinimized(false);
+    }
+
+    public void launchActivity(Class<?> clss) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            mClss = clss;
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, ZBAR_CAMERA_PERMISSION);
+        } else {
+            Intent intent = new Intent(this, clss);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case ZBAR_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(mClss != null) {
+                        Intent intent = new Intent(this, mClss);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(this, "Please grant camera permission to use the QR Scanner", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
     }
 }

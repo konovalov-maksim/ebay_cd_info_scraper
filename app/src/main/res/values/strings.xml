@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Ebay Scraper</string>
+    <string name="scanner">Barcode scanner</string>
     <string name="ebay_token" translatable="false">MaksimKo-agregato-PRD-5388a6d5f-1b894369</string>
     <string name="discogs_token" translatable="false">BKIPShmLTgeDnsHvkdmHsSMgAnkrCBgIUCRyvmKw</string>
 
@@ -38,7 +39,6 @@
     <string name="no_queries">No queries are specified</string>
     <string name="no_upc">No UPCs are specified</string>
     <string name="incorrect_items_limit">Incorrect items limit!</string>
-
 
 
 </resources>
