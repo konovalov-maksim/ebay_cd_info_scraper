@@ -1,10 +1,10 @@
 package konovalov.ebayscraper;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,16 +41,11 @@ public class ScannerActivity extends AppCompatActivity implements ZBarScannerVie
 
     @Override
     public void handleResult(Result rawResult) {
-        String result = rawResult.getContents();
-
-        Toast.makeText(this, "Contents = " + rawResult.getContents() +
-                ", Format = " + rawResult.getBarcodeFormat().getName(), Toast.LENGTH_SHORT).show();
-        // Note:
-        // * Wait 2 seconds to resume the preview.
-        // * On older devices continuously stopping and resuming camera preview can result in freezing the app.
-        // * I don't know why this is the case but I don't have the time to figure out.
-        Handler handler = new Handler();
-        handler.postDelayed(() -> mScannerView.resumeCameraPreview(ScannerActivity.this), 2000);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("barcode", rawResult.getContents());
+        setResult(Activity.RESULT_OK, returnIntent);
+        mScannerView.stopCamera();
+        finish();
     }
 
     public void setupToolbar() {

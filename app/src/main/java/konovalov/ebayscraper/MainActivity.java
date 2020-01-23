@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -15,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -344,12 +346,25 @@ public class MainActivity extends AppCompatActivity implements
                     new String[]{Manifest.permission.CAMERA}, ZBAR_CAMERA_PERMISSION);
         } else {
             Intent intent = new Intent(this, clss);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String upc = data.getStringExtra("barcode");
+                String upcs = upcEt.getText().toString()
+                        + (upcEt.getText() == null || upcEt.getText().toString().isEmpty() ? "" : "\n")
+                        + upc;
+                runOnUiThread(() -> upcEt.setText(upcs));
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case ZBAR_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -357,10 +372,18 @@ public class MainActivity extends AppCompatActivity implements
                         Intent intent = new Intent(this, mClss);
                         startActivity(intent);
                     }
-                } else {
-                    Toast.makeText(this, "Please grant camera permission to use the QR Scanner", Toast.LENGTH_SHORT).show();
-                }
-                return;
+                } else
+                    Toast.makeText(this, getString(R.string.needs_camera_permission), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN &&
+            event.getAction() == KeyEvent.ACTION_DOWN) {
+            scanBtn.performClick();
+            return true;
+        }
+        else return super.dispatchKeyEvent(event);
     }
 }
