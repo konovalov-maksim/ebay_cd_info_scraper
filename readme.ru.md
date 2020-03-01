@@ -5,9 +5,9 @@
 ![download](https://user-images.githubusercontent.com/49783652/70123296-6b99f480-1683-11ea-8f71-ac9d1e14fd54.png) Скачать релиз (v1.0): [EbayCdInfoScraper-1-0-0.apk](https://github.com/konovalov-maksim/ebay_cd_info_scraper/releases/download/1.0.0/EbayCdInfoScraper.apk) (8.76 Mb)
 
 
-![scrn1-ru](https://user-images.githubusercontent.com/49783652/75628655-2d619200-5bec-11ea-900f-44f10567bcb5.png)
-![scrn2-ru](https://user-images.githubusercontent.com/49783652/75628657-2d619200-5bec-11ea-9fba-f887688f04ea.png)
-![scrn3-ru](https://user-images.githubusercontent.com/49783652/75628659-2dfa2880-5bec-11ea-908b-0610d70b4e61.png)
+![scrn1-ru](https://user-images.githubusercontent.com/49783652/75628701-9cd78180-5bec-11ea-843e-6032b4ba5287.png)
+![scrn2-ru](https://user-images.githubusercontent.com/49783652/75628699-9ba65480-5bec-11ea-8c26-cc8dc8f602b3.png)
+![scrn3-ru](https://user-images.githubusercontent.com/49783652/75628697-9a752780-5bec-11ea-9419-ff524c575308.png)
 
 
 #### Особенности:
