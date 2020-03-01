@@ -19,7 +19,7 @@ public class ScannerActivity extends AppCompatActivity implements ZBarScannerVie
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        setContentView(R.layout.activity_simple_scanner);
+        setContentView(R.layout.activity_scanner);
         setupToolbar();
         ViewGroup contentFrame = findViewById(R.id.content_frame);
         mScannerView = new ZBarScannerView(this);
