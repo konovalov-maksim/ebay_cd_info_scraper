@@ -7,3 +7,11 @@
 ![scrn1](https://user-images.githubusercontent.com/49783652/75628702-9cd78180-5bec-11ea-80a1-0ff758649170.png)
 ![scrn2](https://user-images.githubusercontent.com/49783652/75628700-9c3eeb00-5bec-11ea-8101-80ac056f840e.png)
 ![scrn3](https://user-images.githubusercontent.com/49783652/75628698-9b0dbe00-5bec-11ea-8e74-3c06d7ba1c4d.png)
+
+
+#### Features:
+- Active items quantity and sold items quantity extraction
+- AVG cost of active and sold items calculation
+- Multithread data extraction
+- Category and item condition filters
+- Searching for CD by them barcode (using discogs.com data)
