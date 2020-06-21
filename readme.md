@@ -4,6 +4,8 @@
 
 ![download](https://user-images.githubusercontent.com/49783652/70123296-6b99f480-1683-11ea-8f71-ac9d1e14fd54.png) Download release (v1.0): [EbayCdInfoScraper-1-0-0.apk](https://github.com/konovalov-maksim/ebay_cd_info_scraper/releases/download/1.0.0/EbayCdInfoScraper.apk) (8.76 Mb)
 
+An Android app that allows you to collect information on music CDs from Ebay. The search is performed by the name of the CD, which can be entered either manually or automatically detected using barcode. The barcode can be scanned using a smartphone camera.
+
 ![scrn1](https://user-images.githubusercontent.com/49783652/75628702-9cd78180-5bec-11ea-80a1-0ff758649170.png)
 ![scrn2](https://user-images.githubusercontent.com/49783652/75628700-9c3eeb00-5bec-11ea-8101-80ac056f840e.png)
 ![scrn3](https://user-images.githubusercontent.com/49783652/75628698-9b0dbe00-5bec-11ea-8e74-3c06d7ba1c4d.png)
