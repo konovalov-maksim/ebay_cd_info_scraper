@@ -1,12 +1,5 @@
 package konovalov.ebayscraper;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,36 +7,28 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import konovalov.ebayscraper.core.*;
+import konovalov.ebayscraper.core.ebay.ItemsSeeker;
+import konovalov.ebayscraper.core.entities.Release;
+import konovalov.ebayscraper.core.entities.Result;
+import konovalov.ebayscraper.core.entities.TerapeakResult;
+import konovalov.ebayscraper.core.terapeak.TerapeakItemsSeeker;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import konovalov.ebayscraper.core.Category;
-import konovalov.ebayscraper.core.ebay.ItemsSeeker;
-import konovalov.ebayscraper.core.Logger;
-import konovalov.ebayscraper.core.ResultAdapter;
-import konovalov.ebayscraper.core.UpcConvertor;
-import konovalov.ebayscraper.core.entities.Release;
-import konovalov.ebayscraper.core.entities.Result;
-
-public class MainActivity extends AppCompatActivity implements
-        ItemsSeeker.ResultsLoadingListener,
+public class TerapeakActivity extends AppCompatActivity implements
+        TerapeakItemsSeeker.ResultsLoadingListener,
         UpcConvertor.ConvertorListener,
         Logger {
     private static final int ZBAR_CAMERA_PERMISSION = 1;
@@ -56,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements
     private EditText inputQueriesEt;
     private EditText upcEt;
     private TextView categoryTv;
-    private TextView tab2Tv;
+    private TextView tab1Tv;
 
     private ProgressBar upcPb;
     private ProgressBar categoryPb;
@@ -74,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private ConstraintLayout optionsCl;
 
-    private ItemsSeeker itemsSeeker;
+    private TerapeakItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
     private String appName;
     private String discogsToken;
@@ -95,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_terapeak);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         sPref = getPreferences(MODE_PRIVATE);
@@ -110,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         subcategorySpn = findViewById(R.id.subcategorySpn);
         itemsLimitEt = findViewById(R.id.itemsLimitTf);
         categoryTv = findViewById(R.id.categoryTv);
-        tab2Tv = findViewById(R.id.tab2Tv);
+        tab1Tv = findViewById(R.id.tab1Tv);
 
         upcPb = findViewById(R.id.upcPb);
         categoryPb = findViewById(R.id.categoryPb);
@@ -153,12 +138,12 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setButtonListeners() {
         searchBtn.setOnClickListener(v -> {
-            if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
+/*            if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.no_queries), Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
             List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));
-            itemsSeeker = new ItemsSeeker(queries, appName, getCondition(), this);
+            itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
             itemsSeeker.setLogger(this);
             itemsSeeker.setMaxThreads((int) threadsSpn.getSelectedItem());
             sPrefEditor = sPref.edit();
@@ -235,12 +220,12 @@ public class MainActivity extends AppCompatActivity implements
 
         minimizeBtn.setOnClickListener(v -> setMinimized(!isMinimized));
 
-        scanBtn.setOnClickListener(v -> launchScannerActivity(ScannerActivity.class));
+        scanBtn.setOnClickListener(v -> launchActivity(ScannerActivity.class));
 
-        tab2Tv.setOnClickListener(v -> startActivity(new Intent(this, TerapeakActivity.class)));
+        tab1Tv.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
     }
 
-    private void clearOutput() {
+    private void clearOutput(){
         resultsSet.clear();
         results.clear();
         adapter.notifyDataSetChanged();
@@ -250,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements
         Log.d("MyLog", message);
     }
 
-    private ItemsSeeker.Condition getCondition(){
-        if (conditionSpn.getSelectedItem().equals("New")) return ItemsSeeker.Condition.NEW;
-        if (conditionSpn.getSelectedItem().equals("Used")) return ItemsSeeker.Condition.USED;
-        return ItemsSeeker.Condition.ALL;
+    private TerapeakItemsSeeker.Condition getCondition(){
+        if (conditionSpn.getSelectedItem().equals("New")) return TerapeakItemsSeeker.Condition.NEW;
+        if (conditionSpn.getSelectedItem().equals("Used")) return TerapeakItemsSeeker.Condition.USED;
+        return TerapeakItemsSeeker.Condition.ALL;
     }
 
     private void selectCategory(String categoryId) {
@@ -294,12 +279,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onResultReceived(Result result) {
-        if (!resultsSet.contains(result.getQuery())) {
+    public void onResultReceived(TerapeakResult result) {
+        /*        if (!resultsSet.contains(result.getQuery())) {
             resultsSet.add(result.getQuery());
             results.add(result);
         }
-        refreshAdapter();
+        refreshAdapter();*/
     }
 
     @Override
@@ -342,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements
         else setMinimized(false);
     }
 
-    public void launchScannerActivity(Class<?> clss) {
+    public void launchActivity(Class<?> clss) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             mClss = clss;

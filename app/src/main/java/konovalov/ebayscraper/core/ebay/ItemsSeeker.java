@@ -1,5 +1,6 @@
-package konovalov.ebayscraper.core;
+package konovalov.ebayscraper.core.ebay;
 
+import konovalov.ebayscraper.core.Logger;
 import konovalov.ebayscraper.core.entities.Item;
 import konovalov.ebayscraper.core.entities.Result;
 
