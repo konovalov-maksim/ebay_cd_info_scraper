@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Category {
 
-    private static OkHttpClient client;
+    private final static OkHttpClient client = HttpClient.getInstance();
     private static Logger logger;
     private static Callback callback;
     private static HttpUrl preparedUrl;
@@ -20,7 +20,6 @@ public class Category {
 
     public static Category findById(String caregoryId) {
         prepareUrl();
-        client = new OkHttpClient.Builder().callTimeout(5, TimeUnit.SECONDS).build();
 
         HttpUrl urlWithCatId = preparedUrl.newBuilder()
                 .addQueryParameter("CategoryID", caregoryId)

@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 public class UpcConvertor {
 
+    private final OkHttpClient client = HttpClient.getInstance();
     private Logger logger;
-    private OkHttpClient client;
     private Callback callback;
     private final String BASE_URL = "https://api.discogs.com/database/search";
 
@@ -39,7 +39,6 @@ public class UpcConvertor {
     }
 
     public void start() {
-        client = new OkHttpClient.Builder().callTimeout(timeout, TimeUnit.MILLISECONDS).build();
         threads = 0;
         isRunning = true;
         sendNewRequests();

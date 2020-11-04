@@ -1,5 +1,6 @@
 package konovalov.ebayscraper.core.terapeak;
 
+import konovalov.ebayscraper.core.HttpClient;
 import konovalov.ebayscraper.core.Logger;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 import okhttp3.*;
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class TerapeakItemsSeeker {
 
+    private final OkHttpClient client = HttpClient.getInstance();
     private Logger logger;
-    private OkHttpClient client;
     private Callback callback;
     private HttpUrl preparedUrl;
     private ResultsLoadingListener resultsLoadingListener;
@@ -52,8 +53,6 @@ public class TerapeakItemsSeeker {
     }
 
     public void start() {
-        client = new OkHttpClient.Builder().callTimeout(timeout, TimeUnit.MILLISECONDS)
-                .build();
         threads = 0;
         prepareUrl();
         isRunning = true;
