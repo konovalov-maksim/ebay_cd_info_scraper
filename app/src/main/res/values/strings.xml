@@ -5,7 +5,7 @@
     <string name="discogs_token" translatable="false">BKIPShmLTgeDnsHvkdmHsSMgAnkrCBgIUCRyvmKw</string>
 
 
-    <string name="ebay_search">Ebay search</string>
+    <string name="ebay_search">Classic Ebay search</string>
     <string name="terapeak_search">Terapeak search</string>
 
     <string name="input_queries">Input queries:</string>
