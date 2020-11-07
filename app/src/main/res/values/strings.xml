@@ -8,6 +8,12 @@
     <string name="ebay_search">Classic Ebay search</string>
     <string name="terapeak_search">Terapeak search</string>
 
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="countinue">Continue</string>
+    <string name="falied_to_login">Failed to log in</string>
+    <string name="not_logged_in">Not logged in</string>
+
     <string name="input_queries">Input queries:</string>
     <string name="upc">UPC:</string>
     <string name="items_limit">Items limit:</string>
