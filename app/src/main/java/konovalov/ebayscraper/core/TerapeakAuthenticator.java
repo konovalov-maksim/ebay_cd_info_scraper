@@ -27,7 +27,7 @@ public class TerapeakAuthenticator {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) {
-                loginStatusListener.onStatusReceived(response.code() == 200);
+                loginStatusListener.onStatusReceived(response.priorResponse().code() == 200);
             }
         });
     }

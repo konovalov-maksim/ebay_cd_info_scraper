@@ -9,6 +9,8 @@ import konovalov.ebayscraper.core.TerapeakAuthenticator;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TerapeakAuthenticator authenticator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,12 +18,14 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         HttpClient.init(this);
         setListeners();
+
+        authenticator = new TerapeakAuthenticator(loggedIn -> {
+            if (loggedIn) startActivity(new Intent(this, TerapeakActivity.class));
+            else startActivity(new Intent(this, LoginAcivity.class));
+        });
     }
 
-    private final TerapeakAuthenticator authenticator = new TerapeakAuthenticator(loggedIn -> {
-        if (loggedIn) new Intent(this, TerapeakActivity.class);
-        else new Intent(this, TerapeakLoginAcivity.class);
-    });
+
 
     private void setListeners() {
         findViewById(R.id.ebaySearchBtn).setOnClickListener(v -> startActivity(new Intent(this, EbayActivity.class)));

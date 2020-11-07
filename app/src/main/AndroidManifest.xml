@@ -26,6 +26,7 @@
             android:label="@string/app_name"/>
         <activity android:name=".TerapeakActivity"/>
         <activity android:name=".TerapeakLoginAcivity"/>
+        <activity android:name=".LoginAcivity"/>
     </application>
 
 </manifest>
