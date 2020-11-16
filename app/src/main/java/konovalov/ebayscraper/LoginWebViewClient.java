@@ -6,8 +6,6 @@ import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import konovalov.ebayscraper.core.HttpClient;
-import okhttp3.OkHttpClient;
 
 public class LoginWebViewClient extends WebViewClient {
 
@@ -34,7 +32,7 @@ public class LoginWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         Log.d("cookies", "Page loaded: " + url);
         if (url.equals(securedPageUrl)) {
-            String cookies = CookieManager.getInstance().getCookie(url);
+            String cookies = CookieManager.getInstance().getCookie("https://www.ebay.com/sh/research/api/search");
             Log.d("cookies", url + " ::: " + cookies);
             webViewLoginListener.onLoggedIn(cookies);
         }
