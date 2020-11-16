@@ -19,16 +19,19 @@ public class MainActivity extends AppCompatActivity {
         HttpClient.init(this);
         setListeners();
 
-        authenticator = new TerapeakAuthenticator(loggedIn -> {
-            if (loggedIn) startActivity(new Intent(this, TerapeakActivity.class));
-            else startActivity(new Intent(this, LoginAcivity.class));
-        });
+        authenticator = new TerapeakAuthenticator(this::onLoginStatusReceived);
     }
-
 
 
     private void setListeners() {
         findViewById(R.id.ebaySearchBtn).setOnClickListener(v -> startActivity(new Intent(this, EbayActivity.class)));
         findViewById(R.id.terapeakSearchBtn).setOnClickListener(v -> authenticator.checkIfLoggedIn());
+    }
+
+    private void onLoginStatusReceived(boolean isLoggedIn) {
+        if (isLoggedIn)
+            startActivity(new Intent(this, TerapeakActivity.class));
+        else
+            startActivity(new Intent(this, LoginAcivity.class));
     }
 }

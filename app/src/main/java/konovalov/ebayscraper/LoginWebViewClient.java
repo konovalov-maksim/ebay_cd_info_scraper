@@ -7,21 +7,18 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import konovalov.ebayscraper.core.HttpClient;
-import okhttp3.Cookie;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class LoginWebViewClient extends WebViewClient {
 
-    private final OkHttpClient okHttpClient = HttpClient.getInstance();
+    private final WebViewLoginListener webViewLoginListener;
 
-    private LoginStatusListener loginStatusListener;
+    private final String securedPageUrl;
+
+    public LoginWebViewClient(WebViewLoginListener webViewLoginListener, String securedPageUrl) {
+        this.webViewLoginListener = webViewLoginListener;
+        this.securedPageUrl = securedPageUrl;
+    }
 
     @Override
     public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
@@ -35,35 +32,17 @@ public class LoginWebViewClient extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        String cookiesStr = CookieManager.getInstance().getCookie(url);
-        System.out.println(url + " ::: " + cookiesStr);
-        Log.d("cookies", url + " ::: " + cookiesStr);
-        if (url.equals("https://www.ebay.com/")) {
-            final HttpUrl responseUrl = HttpUrl.parse(url);
-            List<Cookie> responseCookies = new ArrayList<>();
-            for (String cookieStr : cookiesStr.split(";")) {
-                String[] cookiePair = cookieStr.split("=");
-                Cookie cookie = new Cookie.Builder()
-                        .domain(responseUrl.topPrivateDomain())
-                        .name(cookiePair[0].trim())
-                        .value(cookiePair[1].trim())
-                        .build();
-//                Cookie cookie. = Cookie.parse(Objects.requireNonNull(responseUrl), cookiesStr.trim());
-                responseCookies.add(cookie);
-            }
-            okHttpClient.cookieJar().saveFromResponse(Objects.requireNonNull(responseUrl), responseCookies);
-            loginStatusListener.onLoggedIn();
+        Log.d("cookies", "Page loaded: " + url);
+        if (url.equals(securedPageUrl)) {
+            String cookies = CookieManager.getInstance().getCookie(url);
+            Log.d("cookies", url + " ::: " + cookies);
+            webViewLoginListener.onLoggedIn(cookies);
         }
         super.onPageFinished(view, url);
     }
 
-    public interface LoginStatusListener {
-        void onLoggedIn();
+    public interface WebViewLoginListener {
+        void onLoggedIn(String cookies);
     }
-
-    public void setLoginStatusListener(LoginStatusListener loginStatusListener) {
-        this.loginStatusListener = loginStatusListener;
-    }
-
 
 }

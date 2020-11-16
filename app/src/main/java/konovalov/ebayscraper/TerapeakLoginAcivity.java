@@ -2,6 +2,7 @@ package konovalov.ebayscraper;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ public class TerapeakLoginAcivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        statusTv = findViewById(R.id.statusTv);
+        statusTv = findViewById(R.id.loginStatusTv);
         loginEt = findViewById(R.id.loginEt);
         passwordEt = findViewById(R.id.passwordEt);
         loginBtn = findViewById(R.id.loginBtn);
@@ -41,7 +42,7 @@ public class TerapeakLoginAcivity extends AppCompatActivity {
             loginPb.setVisibility(View.VISIBLE);
             statusTv.setVisibility(View.INVISIBLE);
             loginBtn.setEnabled(false);
-            authenticator.login(loginEt.getText().toString(), passwordEt.getText().toString());
+            AsyncTask.execute(() -> authenticator.login(loginEt.getText().toString(), passwordEt.getText().toString()));
         });
     }
 
