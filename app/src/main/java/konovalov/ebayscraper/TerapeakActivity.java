@@ -16,6 +16,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
 import konovalov.ebayscraper.core.*;
 import konovalov.ebayscraper.core.entities.Release;
 import konovalov.ebayscraper.core.entities.Result;
@@ -59,7 +62,6 @@ public class TerapeakActivity extends AppCompatActivity implements
 
     private TerapeakItemsSeeker itemsSeeker;
     private UpcConvertor convertor;
-    private String appName;
     private String discogsToken;
     private Category category;
     private boolean isMinimized;
@@ -82,7 +84,7 @@ public class TerapeakActivity extends AppCompatActivity implements
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         sPref = getPreferences(MODE_PRIVATE);
-        appName = getString(R.string.ebay_token);
+        String appName = getString(R.string.ebay_token);
         discogsToken = getString(R.string.discogs_token);
 
         inputQueriesEt = findViewById(R.id.inputQueriesEt);
@@ -134,91 +136,105 @@ public class TerapeakActivity extends AppCompatActivity implements
     }
 
     private void setButtonListeners() {
-        searchBtn.setOnClickListener(v -> {
-/*            if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
-                Toast.makeText(this, getString(R.string.no_queries), Toast.LENGTH_SHORT).show();
-                return;
-            }*/
-            List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));
-            itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
-            itemsSeeker.setLogger(this);
-            itemsSeeker.setMaxThreads((int) threadsSpn.getSelectedItem());
-            sPrefEditor = sPref.edit();
-            sPrefEditor.putInt("maxThreads", threadsSpn.getSelectedItemPosition());
-            try {
-                if (itemsLimitEt.getText() != null && itemsLimitEt.getText().length() > 0) {
-                    int itemsLimit = Integer.parseInt(itemsLimitEt.getText().toString());
-                    sPrefEditor.putInt("itemsLimit", itemsLimit);
-                    itemsSeeker.setItemsLimit(itemsLimit);
-                }
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, getString(R.string.incorrect_items_limit), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            sPrefEditor.apply();
-            itemsSeeker.setCategoryId(category.getId());
-            resultsSet.clear();
-            results.clear();
-            stopBtn.setEnabled(true);
-            searchBtn.setEnabled(false);
-            setMinimized(true);
-            resultsPb.setVisibility(View.VISIBLE);
-            itemsSeeker.start();
-        });
-
-        stopBtn.setOnClickListener(v -> {
-            if (itemsSeeker != null && itemsSeeker.isRunning()) itemsSeeker.stop();
-        });
-
-        clearBtn.setOnClickListener(v -> {
-            stopBtn.performClick();
-            clearOutput();
-            stopBtn.setEnabled(false);
-            searchBtn.setEnabled(true);
-            inputQueriesEt.setText("");
-            upcEt.setText("");
-            setMinimized(false);
-        });
-
-        selectBtn.setOnClickListener(v -> {
-            if (subcategorySpn.getSelectedItem() == null) return;
-            String categoryId = category.getChildren().get(subcategorySpn.getSelectedItem().toString());
-            if (categoryId != null) selectCategory(categoryId);
-        });
-
-        backBtn.setOnClickListener(v -> {
-            if (category.getParentId() != null && !category.getParentId().equals("0")) selectCategory(category.getParentId());
-        });
-
-        convertBtn.setOnClickListener(v -> {
-            if (upcEt.getText() == null || upcEt.getText().toString().isEmpty()) {
-                Toast.makeText(this, getString(R.string.no_upc), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            notFoundUpcs.clear();
-            List<String> upcs = Arrays.stream(upcEt.getText().toString().split("\\r?\\n"))
-                    .distinct()
-                    .filter(u -> u.length() > 0)
-                    .collect(Collectors.toList());
-            convertor = new UpcConvertor(upcs, discogsToken, this);
-            convertor.setLogger(this);
-            log("UPCs conversion started");
-            convertBtn.setEnabled(false);
-            upcPb.setVisibility(View.VISIBLE);
-            convertor.start();
-        });
-
+        searchBtn.setOnClickListener(v -> startSearch());
+        stopBtn.setOnClickListener(v -> stopSearch());
+        clearBtn.setOnClickListener(v -> clearResults());
+        selectBtn.setOnClickListener(v -> selectCategory());
+        backBtn.setOnClickListener(v -> selectParentCategory());
+        convertBtn.setOnClickListener(v -> convertUpcList());
         optionsBtn.setOnClickListener(v -> {
             if (optionsCl.getVisibility() == View.VISIBLE)
                 optionsCl.setVisibility(View.GONE);
             else
                 optionsCl.setVisibility(View.VISIBLE);
         });
-
         minimizeBtn.setOnClickListener(v -> setMinimized(!isMinimized));
-
         scanBtn.setOnClickListener(v -> launchActivity(ScannerActivity.class));
+    }
 
+    private void startSearch() {
+        //TODO uncomment
+/*        if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.no_queries), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));*/
+        List<String> queries = Arrays.asList("metallica", "elvis");
+
+        itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
+        itemsSeeker.setLogger(this);
+        itemsSeeker.setMaxThreads((int) threadsSpn.getSelectedItem());
+        sPrefEditor = sPref.edit();
+        sPrefEditor.putInt("maxThreads", threadsSpn.getSelectedItemPosition());
+        try {
+            if (itemsLimitEt.getText() != null && itemsLimitEt.getText().length() > 0) {
+                int itemsLimit = Integer.parseInt(itemsLimitEt.getText().toString());
+                sPrefEditor.putInt("itemsLimit", itemsLimit);
+                itemsSeeker.setItemsLimit(itemsLimit);
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, getString(R.string.incorrect_items_limit), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sPrefEditor.apply();
+        itemsSeeker.setCategoryId(category.getId());
+        resultsSet.clear();
+        results.clear();
+        stopBtn.setEnabled(true);
+        searchBtn.setEnabled(false);
+        setMinimized(true);
+        resultsPb.setVisibility(View.VISIBLE);
+        itemsSeeker.start();
+    }
+
+    private void stopSearch() {
+        if (itemsSeeker != null && itemsSeeker.isRunning()) itemsSeeker.stop();
+    }
+
+    private void clearResults() {
+        stopBtn.performClick();
+        clearOutput();
+        stopBtn.setEnabled(false);
+        searchBtn.setEnabled(true);
+        inputQueriesEt.setText("");
+        upcEt.setText("");
+        setMinimized(false);
+    }
+
+    private void selectCategory() {
+        if (subcategorySpn.getSelectedItem() == null) return;
+        String categoryId = category.getChildren().get(subcategorySpn.getSelectedItem().toString());
+        if (categoryId != null) selectCategory(categoryId);
+    }
+
+    private void selectCategory(String categoryId) {
+        categoryPb.setVisibility(View.VISIBLE);
+        Executors.newSingleThreadExecutor().submit(() -> {
+            category = Category.findById(categoryId);
+            if (category != null) setCategory(category);
+        });
+    }
+
+    private void selectParentCategory() {
+        if (category.getParentId() != null && !category.getParentId().equals("0")) selectCategory(category.getParentId());
+    }
+
+    private void convertUpcList() {
+        if (upcEt.getText() == null || upcEt.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.no_upc), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        notFoundUpcs.clear();
+        List<String> upcs = Arrays.stream(upcEt.getText().toString().split("\\r?\\n"))
+                .distinct()
+                .filter(u -> u.length() > 0)
+                .collect(Collectors.toList());
+        convertor = new UpcConvertor(upcs, discogsToken, this);
+        convertor.setLogger(this);
+        log("UPCs conversion started");
+        convertBtn.setEnabled(false);
+        upcPb.setVisibility(View.VISIBLE);
+        convertor.start();
     }
 
     private void clearOutput(){
@@ -231,18 +247,10 @@ public class TerapeakActivity extends AppCompatActivity implements
         Log.d("MyLog", message);
     }
 
-    private TerapeakItemsSeeker.Condition getCondition(){
-        if (conditionSpn.getSelectedItem().equals("New")) return TerapeakItemsSeeker.Condition.NEW;
-        if (conditionSpn.getSelectedItem().equals("Used")) return TerapeakItemsSeeker.Condition.USED;
-        return TerapeakItemsSeeker.Condition.ALL;
-    }
-
-    private void selectCategory(String categoryId) {
-        categoryPb.setVisibility(View.VISIBLE);
-        Executors.newSingleThreadExecutor().submit(() -> {
-            category = Category.findById(categoryId);
-            if (category != null) setCategory(category);
-        });
+    private Condition getCondition(){
+        if (conditionSpn.getSelectedItem().equals("New")) return Condition.NEW;
+        if (conditionSpn.getSelectedItem().equals("Used")) return Condition.USED;
+        return Condition.ALL;
     }
 
     private void setCategory(Category category) {
@@ -276,6 +284,7 @@ public class TerapeakActivity extends AppCompatActivity implements
 
     @Override
     public void onResultReceived(TerapeakResult result) {
+        Log.d("seeker", "Result received in activity: " + result);
         /*        if (!resultsSet.contains(result.getQuery())) {
             resultsSet.add(result.getQuery());
             results.add(result);
@@ -337,8 +346,9 @@ public class TerapeakActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String upc = data.getStringExtra("barcode");
                 String upcs = upcEt.getText().toString()
                         + (upcEt.getText() == null || upcEt.getText().toString().isEmpty() ? "" : "\n")
@@ -349,16 +359,15 @@ public class TerapeakActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case ZBAR_CAMERA_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(mClss != null) {
-                        Intent intent = new Intent(this, mClss);
-                        startActivity(intent);
-                    }
-                } else
-                    Toast.makeText(this, getString(R.string.needs_camera_permission), Toast.LENGTH_SHORT).show();
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        if (requestCode == ZBAR_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (mClss != null) {
+                    Intent intent = new Intent(this, mClss);
+                    startActivity(intent);
+                }
+            } else
+                Toast.makeText(this, getString(R.string.needs_camera_permission), Toast.LENGTH_SHORT).show();
         }
     }
 

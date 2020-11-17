@@ -26,6 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,6 +37,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import konovalov.ebayscraper.core.Category;
+import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.ebay.ItemsSeeker;
 import konovalov.ebayscraper.core.Logger;
 import konovalov.ebayscraper.core.ResultAdapter;
@@ -247,10 +250,10 @@ public class EbayActivity extends AppCompatActivity implements
         Log.d("MyLog", message);
     }
 
-    private ItemsSeeker.Condition getCondition(){
-        if (conditionSpn.getSelectedItem().equals("New")) return ItemsSeeker.Condition.NEW;
-        if (conditionSpn.getSelectedItem().equals("Used")) return ItemsSeeker.Condition.USED;
-        return ItemsSeeker.Condition.ALL;
+    private Condition getCondition(){
+        if (conditionSpn.getSelectedItem().equals("New")) return Condition.NEW;
+        if (conditionSpn.getSelectedItem().equals("Used")) return Condition.USED;
+        return Condition.ALL;
     }
 
     private void selectCategory(String categoryId) {
@@ -353,8 +356,9 @@ public class EbayActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String upc = data.getStringExtra("barcode");
                 String upcs = upcEt.getText().toString()
                         + (upcEt.getText() == null || upcEt.getText().toString().isEmpty() ? "" : "\n")
@@ -365,7 +369,7 @@ public class EbayActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         switch (requestCode) {
             case ZBAR_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

@@ -1,31 +1,35 @@
 package konovalov.ebayscraper.core.terapeak;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.HttpClient;
 import konovalov.ebayscraper.core.Logger;
+import konovalov.ebayscraper.core.entities.Status;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
+import konovalov.ebayscraper.core.pojo.aggregated.ResearchResponse;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class TerapeakItemsSeeker {
 
     private final OkHttpClient client = HttpClient.getInstance();
     private Logger logger;
-    private Callback callback;
     private HttpUrl preparedUrl;
     private ResultsLoadingListener resultsLoadingListener;
 
-//    private final String BASE_URL = "https://www.ebay.com/sh/research/api/search";
-    private final String BASE_URL = "https://www.ebay.com/sh/research/api/search" +
-        "?condition=NEW&dayRange=CUSTOM&endDate=1604127600000&keywords=metallica&marketplace=EBAY-US&startDate=1601535600000&tabName=SOLD";
+    private final String BASE_URL = "https://www.ebay.com/sh/research/api/search";
+//    private final String BASE_URL = "https://www.ebay.com/sh/research/api/search" +
+//        "?condition=NEW&dayRange=CUSTOM&endDate=1604127600000&keywords=metallica&marketplace=EBAY-US&startDate=1601535600000&tabName=SOLD";
 
     private boolean isRunning = false;
     private int threads;
@@ -35,7 +39,6 @@ public class TerapeakItemsSeeker {
     private final Condition condition;
     private String categoryId = null;
     private int dayRange = 90;
-
 
     private final int MAX_ITEMS_PER_PAGE = 50;
     private final int MAX_PAGE_NUMBER = 100;
@@ -49,7 +52,6 @@ public class TerapeakItemsSeeker {
         unprocessed.addAll(queries.stream().distinct().collect(Collectors.toList()));
         this.condition = condition;
         this.resultsLoadingListener = resultsLoadingListener;
-        initCallback();
     }
 
     public void start() {
@@ -65,12 +67,11 @@ public class TerapeakItemsSeeker {
     }
 
     private void sendNewRequests() {
-//        while (isRunning && threads < maxThreads && !unprocessed.isEmpty()) {
+        while (isRunning && threads < maxThreads && !unprocessed.isEmpty()) {
             String query = unprocessed.pop();
 
-
             HttpUrl finalUrl = preparedUrl.newBuilder()
-//                    .addQueryParameter("keywords", query)
+                    .addQueryParameter("keywords", query)
 //                    .addQueryParameter("paginationInput.pageNumber", String.valueOf(page))
 //                    .addQueryParameter("paginationInput.entriesPerPage", String.valueOf(maxOnPage))
                     .build();
@@ -79,71 +80,75 @@ public class TerapeakItemsSeeker {
                     .url(finalUrl)
                     .headers(basicHeaders)
                     .build();
-            System.out.println(finalUrl.url());
+            Log.d("seeker", finalUrl.toString());
 
             threads++;
             client.newCall(request).enqueue(callback);
-//        }
+        }
     }
 
-    private void initCallback() {
-        callback = new Callback() {
-            @Override
-            public synchronized void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try (ResponseBody body = response.peekBody(Long.MAX_VALUE)) {
-                    String responseBody = body.string();
-                    System.out.println(responseBody);
-                }
-                System.out.println(response);
-/*                if (!isRunning) return;
-                threads--;
-                //Adding results
-                Result newResult = extractResult(response);
-                Result oldResult = results.get(newResult.getQuery());
-                Result result;
-                log(String.format("%-30s%s", "Query: " + response.request().url().queryParameter("keywords"),
-                        " - page " + response.request().url().queryParameter("paginationInput.pageNumber") + " loaded"));
-                if (oldResult == null) {
-                    results.put(newResult.getQuery(), newResult);
-                    result = newResult;
-                } else {
-                    oldResult.getItems().addAll(newResult.getItems());
-                    oldResult.setCompleteItemsTotal(newResult.getCompleteItemsTotal());
-                    result = oldResult;
-                }
 
-                //Adding to queue again if needed to load remaining pagination pages
-                long itemsFound = callType.equals(CallType.ACTIVE) ? result.getActiveItemsFound() : result.getCompleteItemsFound();
-                long itemsTotal = callType.equals(CallType.ACTIVE) ? result.getActiveItemsTotal() : result.getCompleteItemsTotal();
-                if (itemsFound < itemsTotal && itemsFound < itemsLimit) {
-                    unprocessed.add(result.getQuery());
-                    result.setStatus(Result.Status.LOADING);
-                } else if (callType.equals(CallType.COMPLETED)) {
-                    result.setStatus(Result.Status.COMPLETED);
-                    log(String.format("%-30s%s", "Query: " + result.getQuery(), " - all items found: " + result.getItems().size()));
-                }
+    private final Callback callback = new Callback() {
+        @Override
+        public synchronized void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            if (!isRunning) return;
+            threads--;
+            String query = response.request().url().queryParameter("keywords");
+            String tabName = response.request().url().queryParameter("tabName");
+            TerapeakResult result = results.getOrDefault(query, new TerapeakResult(query));
+            try (ResponseBody body = response.peekBody(Long.MAX_VALUE)) {
+                String bodyContent = body.string();
+                Log.d("seeker", bodyContent);
+                if ("SOLD".equalsIgnoreCase(tabName)) {
+                    extractResultSold(bodyContent, result);
+                } else if ("ACTIVE".equalsIgnoreCase(tabName)) {
 
-                checkIsComplete();
-                sendNewRequests();
-                resultsLoadingListener.onResultReceived(result);*/
+                }
             }
 
-            @Override
-            public synchronized void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-/*                if (!isRunning) return;
-                threads--;
-                String query = call.request().url().queryParameter("keywords");
-                Result result = new Result(query);
-                result.setStatus(Result.Status.ERROR);
-                results.putIfAbsent(result.getQuery(), result);
-                log(String.format("%-30s%s", "Query: " + result.getQuery(),
-                        " - page " + call.request().url().queryParameter("paginationInput.pageNumber") + ": loading error!"));
-                checkIsComplete();
-                sendNewRequests();
-                resultsLoadingListener.onResultReceived(result);*/
-            }
-        };
+            if (result.isActiveInfoSet() && result.isSoldInfoSet()) result.setStatus(Status.COMPLETED);
+            else result.setStatus(Status.LOADING);
+
+            resultsLoadingListener.onResultReceived(result);
+            checkIsComplete();
+            sendNewRequests();
+        }
+
+        @Override
+        public synchronized void onFailure(@NotNull Call call, @NotNull IOException e) {
+            Log.e("seeker", "Failed to get response", e);
+            if (!isRunning) return;
+            threads--;
+            String query = call.request().url().queryParameter("keywords");
+            TerapeakResult result = new TerapeakResult(query);
+            result.setStatus(Status.ERROR);
+//            results.add(result);
+            resultsLoadingListener.onResultReceived(result);
+            checkIsComplete();
+            sendNewRequests();
+        }
+    };
+
+    private TerapeakResult extractResultSold(String responseBody, TerapeakResult result) {
+        String aggregatedInfoJson = responseBody.split("\\n")[0];
+
+        ResearchResponse responseRoot = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
+        Log.d("seeker", responseRoot.toString());
+
+        String avgSoldPriceStr = responseRoot.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
+        double avgSoldPrice = Double.parseDouble(avgSoldPriceStr.replaceAll("[^\\d.]", ""));
+        result.setAvgSoldPrice(avgSoldPrice);
+
+        String totalSoldStr = responseRoot.getSections().get(2).getDataItems().get(0).getValue().getAccessibilityText();
+        int totalSold = Integer.parseInt(totalSoldStr.replaceAll("[^\\d]", ""));
+        result.setTotalSold(totalSold);
+
+        String sellThroughStr = responseRoot.getSections().get(2).getDataItems().get(1).getValue().getAccessibilityText();
+        double sellThrough = Double.parseDouble(sellThroughStr.replaceAll("[^\\d.]", ""));
+        result.setSelfThrough(sellThrough);
+
+        result.setSoldInfoSet(true);
+        return result;
     }
 
     private void checkIsComplete() {
@@ -156,11 +161,7 @@ public class TerapeakItemsSeeker {
         resultsLoadingListener.onAllResultsReceived();
     }
 
-    //Extracting Result object from JSON response body
-    private TerapeakResult extractResult(Response response) {
 
-        return new TerapeakResult();
-    }
 
     //Preparing URL with get parameters
     private void prepareUrl() {
@@ -182,27 +183,16 @@ public class TerapeakItemsSeeker {
 
         HttpUrl.Builder urlBuilder = httpUrl.newBuilder()
 //                .addQueryParameter("dayRange", "CUSTOM")
-//                .addQueryParameter("marketplace", "EBAY-US")
-//                .addQueryParameter("RESPONSE-DATA-FORMAT", "JSON")
+                .addQueryParameter("dayRange", "90")
+                .addQueryParameter("marketplace", "EBAY-US")
+                .addQueryParameter("tabName", "SOLD")
                 ;
 
-//        //Condition items filter. Docs - https://developer.ebay.com/DevZone/finding/CallRef/types/ItemFilterType.html
-//        if (condition.equals(Condition.NEW)) {
-//            urlBuilder.addQueryParameter("itemFilter(0).name", "Condition")
-//                    .addQueryParameter("itemFilter(0).value(0)", "1000") //New
-//                    .addQueryParameter("itemFilter(0).value(1)", "1500") //New other (see details)
-//                    .addQueryParameter("itemFilter(0).value(2)", "1750"); //New with defects
-//        } else if (condition.equals(Condition.USED)) {
-//            urlBuilder.addQueryParameter("itemFilter(0).name", "Condition")
-//                    .addQueryParameter("itemFilter(0).value(0)", "2000") //Manufacturer refurbished
-//                    .addQueryParameter("itemFilter(0).value(1)", "2500") //Seller refurbished
-//                    .addQueryParameter("itemFilter(0).value(2)", "2750") //Like New
-//                    .addQueryParameter("itemFilter(0).value(3)", "3000") //Used
-//                    .addQueryParameter("itemFilter(0).value(4)", "4000") //Very Good
-//                    .addQueryParameter("itemFilter(0).value(5)", "5000") //Good
-//                    .addQueryParameter("itemFilter(0).value(6)", "6000") //Acceptable
-//                    .addQueryParameter("itemFilter(0).value(7)", "7000"); //For parts or not working
-//        }
+        if (condition.equals(Condition.NEW)) {
+            urlBuilder.addQueryParameter("Condition", "NEW"); //New with defects
+        } else if (condition.equals(Condition.USED)) {
+            urlBuilder.addQueryParameter("Condition", "USED");
+        }
         //Category filter
         if (categoryId != null) urlBuilder.addQueryParameter("categoryId", categoryId);
         preparedUrl = urlBuilder.build();
@@ -223,11 +213,6 @@ public class TerapeakItemsSeeker {
     public void setLogger(Logger logger) {
         this.logger = logger;
     }
-
-    public enum Condition {
-        NEW, USED, ALL
-    }
-
 
     public interface ResultsLoadingListener {
         void onResultReceived(TerapeakResult result);
@@ -258,10 +243,6 @@ public class TerapeakItemsSeeker {
 
     public void setTimeout(long timeout) {
         this.timeout = timeout;
-    }
-
-    public List<TerapeakResult> getResults() {
-        return new ArrayList<>(results.values());
     }
 
     public boolean isRunning() {

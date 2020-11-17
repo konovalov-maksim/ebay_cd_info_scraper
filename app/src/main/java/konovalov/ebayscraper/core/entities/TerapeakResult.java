@@ -1,19 +1,24 @@
 package konovalov.ebayscraper.core.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TerapeakResult {
 
+    private final String query;
     private double avgSoldPrice;
-    private double minSoldPrice;
-    private double maxSoldPrice;
-    private double avgShipping;
-    private int freeShipping;
+    private double avgListingPrice;
     private int totalSold;
+    private int totalActive;
     private double selfThrough;
-    private int totalSellers;
-    private List<TerapeakItem> items = new ArrayList<>();
+    private Status status;
+    private boolean isSoldInfoSet = false;
+    private boolean isActiveInfoSet = false;
+
+    public TerapeakResult(String query) {
+        this.query = query;
+    }
+
+    public String getQuery() {
+        return query;
+    }
 
     public double getAvgSoldPrice() {
         return avgSoldPrice;
@@ -23,36 +28,12 @@ public class TerapeakResult {
         this.avgSoldPrice = avgSoldPrice;
     }
 
-    public double getMinSoldPrice() {
-        return minSoldPrice;
+    public double getAvgListingPrice() {
+        return avgListingPrice;
     }
 
-    public void setMinSoldPrice(double minSoldPrice) {
-        this.minSoldPrice = minSoldPrice;
-    }
-
-    public double getMaxSoldPrice() {
-        return maxSoldPrice;
-    }
-
-    public void setMaxSoldPrice(double maxSoldPrice) {
-        this.maxSoldPrice = maxSoldPrice;
-    }
-
-    public double getAvgShipping() {
-        return avgShipping;
-    }
-
-    public void setAvgShipping(double avgShipping) {
-        this.avgShipping = avgShipping;
-    }
-
-    public int getFreeShipping() {
-        return freeShipping;
-    }
-
-    public void setFreeShipping(int freeShipping) {
-        this.freeShipping = freeShipping;
+    public void setAvgListingPrice(double avgListingPrice) {
+        this.avgListingPrice = avgListingPrice;
     }
 
     public int getTotalSold() {
@@ -63,6 +44,14 @@ public class TerapeakResult {
         this.totalSold = totalSold;
     }
 
+    public int getTotalActive() {
+        return totalActive;
+    }
+
+    public void setTotalActive(int totalActive) {
+        this.totalActive = totalActive;
+    }
+
     public double getSelfThrough() {
         return selfThrough;
     }
@@ -71,20 +60,28 @@ public class TerapeakResult {
         this.selfThrough = selfThrough;
     }
 
-    public int getTotalSellers() {
-        return totalSellers;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setTotalSellers(int totalSellers) {
-        this.totalSellers = totalSellers;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public List<TerapeakItem> getItems() {
-        return items;
+    public boolean isSoldInfoSet() {
+        return isSoldInfoSet;
     }
 
-    public void setItems(List<TerapeakItem> items) {
-        this.items = items;
+    public void setSoldInfoSet(boolean soldInfoSet) {
+        isSoldInfoSet = soldInfoSet;
+    }
+
+    public boolean isActiveInfoSet() {
+        return isActiveInfoSet;
+    }
+
+    public void setActiveInfoSet(boolean activeInfoSet) {
+        isActiveInfoSet = activeInfoSet;
     }
 
 

@@ -1,5 +1,6 @@
 package konovalov.ebayscraper.core.ebay;
 
+import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.HttpClient;
 import konovalov.ebayscraper.core.Logger;
 import konovalov.ebayscraper.core.entities.Item;
@@ -288,10 +289,6 @@ public class ItemsSeeker {
 
     public void setLogger(Logger logger) {
         this.logger = logger;
-    }
-
-    public enum Condition {
-        NEW, USED, ALL
     }
 
     private enum CallType {
