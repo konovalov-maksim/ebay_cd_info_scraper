@@ -31,7 +31,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/queryTv"
+            app:layout_constraintTop_toBottomOf="@+id/soldBtn"
             app:layout_constraintWidth_percent="0.16" />
 
         <TextView
@@ -104,90 +104,159 @@
             app:layout_constraintTop_toTopOf="@+id/col5"
             app:layout_constraintWidth_percent="0.16" />
 
-        <ProgressBar
-            android:id="@+id/resultsPb"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/queryTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/soldBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/soldBtn"
             tools:text="metallica" />
 
         <TextView
             android:id="@+id/activeItemsTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/soldItemsTv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/col1" />
+            app:layout_constraintTop_toBottomOf="@+id/col1"
+            tools:text="0" />
 
         <TextView
             android:id="@+id/soldItemsTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/activeItemsTv"
             app:layout_constraintEnd_toStartOf="@+id/avgListedTv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/activeItemsTv"
-            app:layout_constraintTop_toTopOf="@+id/activeItemsTv" />
+            app:layout_constraintTop_toTopOf="@+id/activeItemsTv"
+            tools:text="0" />
 
         <TextView
             android:id="@+id/avgListedTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/soldItemsTv"
             app:layout_constraintEnd_toStartOf="@+id/avgSoldTv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/soldItemsTv"
-            app:layout_constraintTop_toTopOf="@+id/soldItemsTv" />
+            app:layout_constraintTop_toTopOf="@+id/soldItemsTv"
+            tools:text="0" />
 
         <TextView
             android:id="@+id/avgSoldTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/avgListedTv"
             app:layout_constraintEnd_toStartOf="@+id/soldRatioTv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/avgListedTv"
-            app:layout_constraintTop_toTopOf="@+id/avgListedTv" />
+            app:layout_constraintTop_toTopOf="@+id/avgListedTv"
+            tools:text="0" />
 
         <TextView
             android:id="@+id/soldRatioTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/avgSoldTv"
             app:layout_constraintEnd_toStartOf="@+id/currentValueTv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/avgSoldTv"
-            app:layout_constraintTop_toTopOf="@+id/avgSoldTv" />
+            app:layout_constraintTop_toTopOf="@+id/avgSoldTv"
+            tools:text="0" />
 
         <TextView
             android:id="@+id/currentValueTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="0"
+            android:gravity="right"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/soldRatioTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/soldRatioTv"
-            app:layout_constraintTop_toTopOf="@+id/soldRatioTv" />
+            app:layout_constraintTop_toTopOf="@+id/soldRatioTv"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/soldBtn"
+            style="@style/tab_btn"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/sold"
+            app:layout_constraintBottom_toBottomOf="@+id/activeBtn"
+            app:layout_constraintEnd_toStartOf="@+id/activeBtn"
+            app:layout_constraintTop_toTopOf="@+id/activeBtn" />
+
+        <TextView
+            android:id="@+id/activeBtn"
+            style="@style/tab_btn"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="0dp"
+            android:text="@string/active"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/soldItemsCl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/activeItemsCl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activeItemsTv">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/soldItemsRv"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activeItemsCl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/soldItemsCl">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activeItemsRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

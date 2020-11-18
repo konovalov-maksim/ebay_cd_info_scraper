@@ -22,10 +22,10 @@ public class TerapeakListingActivity extends AppCompatActivity {
 
         result = (TerapeakResult) getIntent().getSerializableExtra("result");
 
-        showResult();
+        showResultParams();
     }
 
-    private void showResult() {
+    private void showResultParams() {
         ((TextView) findViewById(R.id.queryTv)).setText(result.getQuery());
         ((TextView) findViewById(R.id.activeItemsTv)).setText(getNullable(result.getTotalActive()));
         ((TextView) findViewById(R.id.soldItemsTv)).setText(getNullable(result.getTotalSold()));
@@ -33,8 +33,9 @@ public class TerapeakListingActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.avgSoldTv)).setText(getNullable(result.getAvgSoldPrice()));
         ((TextView) findViewById(R.id.soldRatioTv)).setText(getNullable(result.getSoldRatio()));
         ((TextView) findViewById(R.id.currentValueTv)).setText(getNullable(result.getCurValue()));
-
     }
+
+
 
     private static String getNullable(Number value) {
         if (value == null) return "n/a";

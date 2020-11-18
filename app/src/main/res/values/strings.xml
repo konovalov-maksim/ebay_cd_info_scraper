@@ -45,6 +45,8 @@
     <string name="back">Back</string>
     <string name="minimize">↑</string>
     <string name="expand">↓</string>
+    <string name="active">Active</string>
+    <string name="sold">Sold</string>
 
     <string name="no_queries">No queries are specified</string>
     <string name="no_upc">No UPCs are specified</string>

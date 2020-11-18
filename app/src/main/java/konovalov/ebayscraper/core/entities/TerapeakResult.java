@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TerapeakResult implements Serializable {
@@ -18,6 +20,8 @@ public class TerapeakResult implements Serializable {
     private Status status = Status.NEW;
     private boolean isSoldInfoSet = false;
     private boolean isActiveInfoSet = false;
+    private List<ItemActive> activeItems = new ArrayList<>();
+    private List<ItemSold> soldItems = new ArrayList<>();
 
     public TerapeakResult(String query) {
         this.query = query;
@@ -89,6 +93,22 @@ public class TerapeakResult implements Serializable {
 
     public void setActiveInfoSet(boolean activeInfoSet) {
         isActiveInfoSet = activeInfoSet;
+    }
+
+    public List<ItemActive> getActiveItems() {
+        return activeItems;
+    }
+
+    public void setActiveItems(List<ItemActive> activeItems) {
+        this.activeItems = activeItems;
+    }
+
+    public List<ItemSold> getSoldItems() {
+        return soldItems;
+    }
+
+    public void setSoldItems(List<ItemSold> soldItems) {
+        this.soldItems = soldItems;
     }
 
     @Nullable

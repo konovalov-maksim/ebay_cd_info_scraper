@@ -9,13 +9,19 @@ import com.google.gson.JsonObject;
 import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.HttpClient;
 import konovalov.ebayscraper.core.Logger;
+import konovalov.ebayscraper.core.entities.ItemActive;
+import konovalov.ebayscraper.core.entities.ItemSold;
 import konovalov.ebayscraper.core.entities.Status;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 import konovalov.ebayscraper.core.pojo.aggregated.ResearchResponse;
+import konovalov.ebayscraper.core.pojo.item.active.ItemsActiveResponse;
+import konovalov.ebayscraper.core.pojo.item.active.Result;
+import konovalov.ebayscraper.core.pojo.item.sold.ItemsSoldResponse;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Deque;
 import java.util.LinkedHashMap;
@@ -143,9 +149,9 @@ public class TerapeakItemsSeeker {
     };
 
     private void extractResultSold(String responseBody, TerapeakResult result) {
-        String aggregatedInfoJson = responseBody.split("\\n")[0];
-        Log.d("seeker", aggregatedInfoJson);
+        String[] jsonParts = responseBody.split("\\n");
 
+        String aggregatedInfoJson = jsonParts[0];
         ResearchResponse aggregateJson = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
 
         String avgSoldPriceStr = aggregateJson.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
@@ -160,22 +166,29 @@ public class TerapeakItemsSeeker {
         double sellThrough = Double.parseDouble(sellThroughStr.replaceAll("[^\\d.]", ""));
         result.setSelfThrough(sellThrough);
 
+        try {
+            String itemsInfoJson = jsonParts[4];
+            List<ItemSold> soldItems = extractSoldItems(itemsInfoJson);
+            result.setSoldItems(soldItems);
+        } catch (Exception e) {
+            Log.e("seeker", "Failed to extract sold items info", e);
+            result.setStatus(Status.ERROR);
+        }
+
         result.setSoldInfoSet(true);
     }
 
     private void extractResultActive(String responseBody, TerapeakResult result) {
-        String aggregatedInfoJson = responseBody.split("\\n")[0];
-        String categoryInfoJson = responseBody.split("\\n")[2];
-        Log.d("seeker", aggregatedInfoJson);
-        Log.d("seeker", categoryInfoJson);
+        String[] jsonParts = responseBody.split("\\n");
 
+        String aggregatedInfoJson = jsonParts[0];
         ResearchResponse aggregateJson = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
-        JsonObject categoryJson = new Gson().fromJson(categoryInfoJson, JsonObject.class);
-
         String avgListingPriceStr = aggregateJson.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
         double avgListingPrice = Double.parseDouble(avgListingPriceStr.replaceAll("[^\\d.]", ""));
         result.setAvgListingPrice(avgListingPrice);
 
+        String categoryInfoJson = jsonParts[2];
+        JsonObject categoryJson = new Gson().fromJson(categoryInfoJson, JsonObject.class);
         JsonArray breadcrumbs = categoryJson
                 .get("primaryCategories").getAsJsonObject()
                 .get("categoryCount").getAsJsonArray();
@@ -185,7 +198,59 @@ public class TerapeakItemsSeeker {
         int totalActiveItems = Integer.parseInt(totalActiveStr.replaceAll("[^\\d]", ""));
         result.setTotalActive(totalActiveItems);
 
+        try {
+            String itemsInfoJson = jsonParts[4];
+            List<ItemActive> activeItems = extractActiveItems(itemsInfoJson);
+            result.setActiveItems(activeItems);
+        } catch (Exception e) {
+            Log.e("seeker", "Failed to extract active items info", e);
+            result.setStatus(Status.ERROR);
+        }
+
         result.setActiveInfoSet(true);
+    }
+
+    private List<ItemSold> extractSoldItems(String itemsJson) {
+        List<ItemSold> items = new ArrayList<>();
+
+        ItemsSoldResponse root = new Gson().fromJson(itemsJson, ItemsSoldResponse.class);
+        List<konovalov.ebayscraper.core.pojo.item.sold.Result> results = root.getResults();
+        for (konovalov.ebayscraper.core.pojo.item.sold.Result result : results) {
+            ItemSold item = new ItemSold();
+            item.setTitle(result.getListing().getTitle().getTextSpans().get(0).getText());
+            item.setId(result.getListing().getItemId().getValue());
+            item.setImgUrl(result.getListing().getImage().getURL());
+            item.setFormat(result.getListing().getFormatList().get(0).getAccessibilityText());
+            item.setAvgSoldPrice(result.getAvgsalesprice().getAvgsalesprice().getTextSpans().get(0).getText());
+            item.setShipping(result.getAvgsalesprice().getAverageshipping().getTextSpans().get(0).getText());
+            item.setTotalSold(result.getTotalsales().getTextSpans().get(0).getText());
+            item.setTotalSales(result.getTotalsales().getTextSpans().get(0).getText());
+            item.setBids(result.getBids().getTextSpans().get(0).getText());
+            item.setLastSold(result.getDatelastsold().getTextSpans().get(0).getText());
+            items.add(item);
+        }
+        return items;
+    }
+
+    private List<ItemActive> extractActiveItems(String itemsJson) {
+        List<ItemActive> items = new ArrayList<>();
+
+        ItemsActiveResponse root = new Gson().fromJson(itemsJson, ItemsActiveResponse.class);
+        List<Result> results = root.getResults();
+        for (Result result : results) {
+            ItemActive item = new ItemActive();
+            item.setTitle(result.getListing().getTitle().getTextSpans().get(0).getText());
+            item.setId(result.getListing().getItemId().getValue());
+            item.setImgUrl(result.getListing().getImage().getURL());
+            item.setFormat(result.getListing().getFormatList().get(0).getAccessibilityText());
+            item.setListingPrice(result.getListingPrice().getListingPrice().getTextSpans().get(0).getText());
+            item.setShipping(result.getListingPrice().getListingShipping().getTextSpans().get(0).getText());
+            item.setBids(result.getBids().getTextSpans().get(0).getText());
+            item.setWatchers(result.getBids().getTextSpans().get(0).getText());
+            item.setStartDate(result.getStartDate().getTextSpans().get(0).getText());
+            items.add(item);
+        }
+        return items;
     }
 
     private void checkIsComplete() {
@@ -212,6 +277,7 @@ public class TerapeakItemsSeeker {
 
         HttpUrl.Builder urlBuilder = httpUrl.newBuilder()
                 .addQueryParameter("marketplace", "EBAY-US")
+                .addQueryParameter("sorting", "-avgsalesprice")
                 .addQueryParameter("dayRange", String.valueOf(dayRange))
                 .addQueryParameter("startDate", String.valueOf(startDate.getTimeInMillis()))
                 .addQueryParameter("endDate", String.valueOf(endDate.getTimeInMillis()))
