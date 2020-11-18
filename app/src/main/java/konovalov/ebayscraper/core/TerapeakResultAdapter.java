@@ -1,6 +1,7 @@
 package konovalov.ebayscraper.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import konovalov.ebayscraper.R;
+import konovalov.ebayscraper.TerapeakListingActivity;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 
 public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<TerapeakResult> results;
+    private final Context context;
 
     public TerapeakResultAdapter(List<TerapeakResult> results, Context context) {
         this.results = results;
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -42,6 +46,8 @@ public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAd
         holder.avgSoldTv.setText(getNullable(result.getAvgSoldPrice()));
         holder.soldRatioTv.setText(getNullable(result.getSoldRatio()));
         holder.curValTv.setText(getNullable(result.getCurValue()));
+
+        holder.rootView.setOnClickListener(v -> showResultListing(result));
     }
 
     @Override
@@ -53,8 +59,11 @@ public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAd
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView queryTv, statusTv, activeItemsTv, soldItemsTv, avgListedTv, avgSoldTv, soldRatioTv, curValTv;
 
+        final View rootView;
+
         ViewHolder(View view){
             super(view);
+            this.rootView = view;
             queryTv = view.findViewById(R.id.queryTv);
             statusTv = view.findViewById(R.id.statusTv);
             activeItemsTv = view.findViewById(R.id.activeItemsTv);
@@ -64,6 +73,12 @@ public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAd
             soldRatioTv = view.findViewById(R.id.soldRatioTv);
             curValTv = view.findViewById(R.id.curValTv);
         }
+    }
+
+    private void showResultListing(TerapeakResult result) {
+        Intent intent = new Intent(context, TerapeakListingActivity.class);
+        intent.putExtra("result", result);
+        context.startActivity(intent);
     }
 
     private static String getNullable(Number value) {

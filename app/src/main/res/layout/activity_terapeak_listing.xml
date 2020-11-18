@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootCl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:context=".TerapeakListingActivity">
+
+
+        <View
+            android:id="@+id/headerBgView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/col1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/col1" />
+
+        <TextView
+            android:id="@+id/col1"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/active_found"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/col2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/queryTv"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <TextView
+            android:id="@+id/col2"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sold_found"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col1"
+            app:layout_constraintEnd_toStartOf="@+id/col3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col1"
+            app:layout_constraintTop_toTopOf="@+id/col1"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <TextView
+            android:id="@+id/col3"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/avg_listed"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col2"
+            app:layout_constraintEnd_toStartOf="@+id/col4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col2"
+            app:layout_constraintTop_toTopOf="@+id/col2"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <TextView
+            android:id="@+id/col4"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/avg_sold"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col3"
+            app:layout_constraintEnd_toStartOf="@+id/col5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col3"
+            app:layout_constraintTop_toTopOf="@+id/col3"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <TextView
+            android:id="@+id/col5"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sold_ratio"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col4"
+            app:layout_constraintEnd_toStartOf="@+id/col6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col4"
+            app:layout_constraintTop_toTopOf="@+id/col4"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <TextView
+            android:id="@+id/col6"
+            style="@style/col_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/current_value"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/col5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/col5"
+            app:layout_constraintTop_toTopOf="@+id/col5"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <ProgressBar
+            android:id="@+id/resultsPb"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/queryTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="metallica" />
+
+        <TextView
+            android:id="@+id/activeItemsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="0"
+            app:layout_constraintEnd_toStartOf="@+id/soldItemsTv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/col1" />
+
+        <TextView
+            android:id="@+id/soldItemsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/activeItemsTv"
+            app:layout_constraintEnd_toStartOf="@+id/avgListedTv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/activeItemsTv"
+            app:layout_constraintTop_toTopOf="@+id/activeItemsTv" />
+
+        <TextView
+            android:id="@+id/avgListedTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/soldItemsTv"
+            app:layout_constraintEnd_toStartOf="@+id/avgSoldTv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/soldItemsTv"
+            app:layout_constraintTop_toTopOf="@+id/soldItemsTv" />
+
+        <TextView
+            android:id="@+id/avgSoldTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/avgListedTv"
+            app:layout_constraintEnd_toStartOf="@+id/soldRatioTv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/avgListedTv"
+            app:layout_constraintTop_toTopOf="@+id/avgListedTv" />
+
+        <TextView
+            android:id="@+id/soldRatioTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/avgSoldTv"
+            app:layout_constraintEnd_toStartOf="@+id/currentValueTv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/avgSoldTv"
+            app:layout_constraintTop_toTopOf="@+id/avgSoldTv" />
+
+        <TextView
+            android:id="@+id/currentValueTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/soldRatioTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/soldRatioTv"
+            app:layout_constraintTop_toTopOf="@+id/soldRatioTv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,11 +2,12 @@ package konovalov.ebayscraper.core.entities;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-public class TerapeakResult {
+public class TerapeakResult implements Serializable {
 
     private final String query;
     private Double avgSoldPrice;
