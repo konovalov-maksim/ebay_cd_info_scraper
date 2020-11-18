@@ -3,11 +3,11 @@ package konovalov.ebayscraper.core.entities;
 public class TerapeakResult {
 
     private final String query;
-    private double avgSoldPrice;
-    private double avgListingPrice;
-    private int totalSold;
-    private int totalActive;
-    private double selfThrough;
+    private Double avgSoldPrice;
+    private Double avgListingPrice;
+    private Integer totalSold;
+    private Integer totalActive;
+    private Double selfThrough;
     private Status status;
     private boolean isSoldInfoSet = false;
     private boolean isActiveInfoSet = false;
@@ -20,43 +20,43 @@ public class TerapeakResult {
         return query;
     }
 
-    public double getAvgSoldPrice() {
+    public Double getAvgSoldPrice() {
         return avgSoldPrice;
     }
 
-    public void setAvgSoldPrice(double avgSoldPrice) {
+    public void setAvgSoldPrice(Double avgSoldPrice) {
         this.avgSoldPrice = avgSoldPrice;
     }
 
-    public double getAvgListingPrice() {
+    public Double getAvgListingPrice() {
         return avgListingPrice;
     }
 
-    public void setAvgListingPrice(double avgListingPrice) {
+    public void setAvgListingPrice(Double avgListingPrice) {
         this.avgListingPrice = avgListingPrice;
     }
 
-    public int getTotalSold() {
+    public Integer getTotalSold() {
         return totalSold;
     }
 
-    public void setTotalSold(int totalSold) {
+    public void setTotalSold(Integer totalSold) {
         this.totalSold = totalSold;
     }
 
-    public int getTotalActive() {
+    public Integer getTotalActive() {
         return totalActive;
     }
 
-    public void setTotalActive(int totalActive) {
+    public void setTotalActive(Integer totalActive) {
         this.totalActive = totalActive;
     }
 
-    public double getSelfThrough() {
+    public Double getSelfThrough() {
         return selfThrough;
     }
 
-    public void setSelfThrough(double selfThrough) {
+    public void setSelfThrough(Double selfThrough) {
         this.selfThrough = selfThrough;
     }
 
@@ -83,6 +83,4 @@ public class TerapeakResult {
     public void setActiveInfoSet(boolean activeInfoSet) {
         isActiveInfoSet = activeInfoSet;
     }
-
-
 }

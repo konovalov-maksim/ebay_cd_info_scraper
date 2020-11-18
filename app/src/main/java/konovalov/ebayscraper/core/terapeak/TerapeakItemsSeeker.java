@@ -3,6 +3,7 @@ package konovalov.ebayscraper.core.terapeak;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.HttpClient;
@@ -38,12 +39,11 @@ public class TerapeakItemsSeeker {
 
     private final Condition condition;
     private String categoryId = null;
-    private int dayRange = 90;
 
     private final int MAX_ITEMS_PER_PAGE = 50;
     private final int MAX_PAGE_NUMBER = 100;
     private int itemsLimit = MAX_ITEMS_PER_PAGE * MAX_PAGE_NUMBER;
-    private int maxThreads = 5;
+    private int maxThreads = 6;
     private long timeout = 10000;
 
     private LinkedHashMap<String, TerapeakResult> results = new LinkedHashMap<>(); //Here stored all found results without duplicates
@@ -70,20 +70,29 @@ public class TerapeakItemsSeeker {
         while (isRunning && threads < maxThreads && !unprocessed.isEmpty()) {
             String query = unprocessed.pop();
 
-            HttpUrl finalUrl = preparedUrl.newBuilder()
+            HttpUrl soldItemsUrl = preparedUrl.newBuilder()
                     .addQueryParameter("keywords", query)
-//                    .addQueryParameter("paginationInput.pageNumber", String.valueOf(page))
-//                    .addQueryParameter("paginationInput.entriesPerPage", String.valueOf(maxOnPage))
+                    .addQueryParameter("tabName", "SOLD")
                     .build();
-
-            Request request = new Request.Builder()
-                    .url(finalUrl)
+            Request soldItemsRequest = new Request.Builder()
+                    .url(soldItemsUrl)
                     .headers(basicHeaders)
                     .build();
-            Log.d("seeker", finalUrl.toString());
-
+            Log.d("seeker", soldItemsUrl.toString());
+            client.newCall(soldItemsRequest).enqueue(callback);
             threads++;
-            client.newCall(request).enqueue(callback);
+
+            HttpUrl activeItemsUrl = preparedUrl.newBuilder()
+                    .addQueryParameter("keywords", query)
+                    .addQueryParameter("tabName", "ACTIVE")
+                    .build();
+            Request activeItemsRequest = new Request.Builder()
+                    .url(activeItemsUrl)
+                    .headers(basicHeaders)
+                    .build();
+            Log.d("seeker", activeItemsUrl.toString());
+            client.newCall(activeItemsRequest).enqueue(callback);
+            threads++;
         }
     }
 
@@ -96,18 +105,24 @@ public class TerapeakItemsSeeker {
             String query = response.request().url().queryParameter("keywords");
             String tabName = response.request().url().queryParameter("tabName");
             TerapeakResult result = results.getOrDefault(query, new TerapeakResult(query));
+            results.putIfAbsent(query, result);
             try (ResponseBody body = response.peekBody(Long.MAX_VALUE)) {
                 String bodyContent = body.string();
                 Log.d("seeker", bodyContent);
                 if ("SOLD".equalsIgnoreCase(tabName)) {
                     extractResultSold(bodyContent, result);
                 } else if ("ACTIVE".equalsIgnoreCase(tabName)) {
-
+                    extractResultActive(bodyContent, result);
                 }
-            }
 
-            if (result.isActiveInfoSet() && result.isSoldInfoSet()) result.setStatus(Status.COMPLETED);
-            else result.setStatus(Status.LOADING);
+                if (!result.getStatus().equals(Status.ERROR)) {
+                    if (result.isActiveInfoSet() && result.isSoldInfoSet()) result.setStatus(Status.COMPLETED);
+                    else result.setStatus(Status.LOADING);
+                }
+            } catch (Exception e) {
+                result.setStatus(Status.ERROR);
+                Log.e("seeker", "Failed to process response");
+            }
 
             resultsLoadingListener.onResultReceived(result);
             checkIsComplete();
@@ -120,35 +135,58 @@ public class TerapeakItemsSeeker {
             if (!isRunning) return;
             threads--;
             String query = call.request().url().queryParameter("keywords");
-            TerapeakResult result = new TerapeakResult(query);
+            TerapeakResult result = results.getOrDefault(query, new TerapeakResult(query));
             result.setStatus(Status.ERROR);
-//            results.add(result);
+            results.putIfAbsent(query, result);
             resultsLoadingListener.onResultReceived(result);
             checkIsComplete();
             sendNewRequests();
         }
     };
 
-    private TerapeakResult extractResultSold(String responseBody, TerapeakResult result) {
+    private void extractResultSold(String responseBody, TerapeakResult result) {
         String aggregatedInfoJson = responseBody.split("\\n")[0];
+        Log.d("seeker", aggregatedInfoJson);
 
-        ResearchResponse responseRoot = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
-        Log.d("seeker", responseRoot.toString());
+        ResearchResponse aggregateJson = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
 
-        String avgSoldPriceStr = responseRoot.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
+        String avgSoldPriceStr = aggregateJson.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
         double avgSoldPrice = Double.parseDouble(avgSoldPriceStr.replaceAll("[^\\d.]", ""));
         result.setAvgSoldPrice(avgSoldPrice);
 
-        String totalSoldStr = responseRoot.getSections().get(2).getDataItems().get(0).getValue().getAccessibilityText();
+        String totalSoldStr = aggregateJson.getSections().get(2).getDataItems().get(0).getValue().getAccessibilityText();
         int totalSold = Integer.parseInt(totalSoldStr.replaceAll("[^\\d]", ""));
         result.setTotalSold(totalSold);
 
-        String sellThroughStr = responseRoot.getSections().get(2).getDataItems().get(1).getValue().getAccessibilityText();
+        String sellThroughStr = aggregateJson.getSections().get(2).getDataItems().get(1).getValue().getAccessibilityText();
         double sellThrough = Double.parseDouble(sellThroughStr.replaceAll("[^\\d.]", ""));
         result.setSelfThrough(sellThrough);
 
         result.setSoldInfoSet(true);
-        return result;
+    }
+
+    private void extractResultActive(String responseBody, TerapeakResult result) {
+        String aggregatedInfoJson = responseBody.split("\\n")[0];
+        String categoryInfoJson = responseBody.split("\\n")[2];
+        Log.d("seeker", aggregatedInfoJson);
+        Log.d("seeker", categoryInfoJson);
+
+        ResearchResponse aggregateJson = new Gson().fromJson(aggregatedInfoJson, ResearchResponse.class);
+        JsonObject categoryJson = new Gson().fromJson(categoryInfoJson, JsonObject.class);
+
+        String avgListingPriceStr = aggregateJson.getSections().get(0).getDataItems().get(0).getValue().getAccessibilityText();
+        double avgListingPrice = Double.parseDouble(avgListingPriceStr.replaceAll("[^\\d.]", ""));
+        result.setAvgListingPrice(avgListingPrice);
+
+        String totalActiveStr = categoryJson
+                .get("primaryCategories").getAsJsonObject()
+                .get("categoryCount").getAsJsonArray()
+                .get(0).getAsJsonObject()
+                .get("text").getAsString();
+        int totalActiveItems = Integer.parseInt(totalActiveStr.replaceAll("[^\\d]", ""));
+        result.setTotalActive(totalActiveItems);
+
+        result.setActiveInfoSet(true);
     }
 
     private void checkIsComplete() {
@@ -182,10 +220,8 @@ public class TerapeakItemsSeeker {
         // &categoryId=2984
 
         HttpUrl.Builder urlBuilder = httpUrl.newBuilder()
-//                .addQueryParameter("dayRange", "CUSTOM")
                 .addQueryParameter("dayRange", "90")
                 .addQueryParameter("marketplace", "EBAY-US")
-                .addQueryParameter("tabName", "SOLD")
                 ;
 
         if (condition.equals(Condition.NEW)) {

@@ -159,7 +159,7 @@ public class TerapeakActivity extends AppCompatActivity implements
             return;
         }
         List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));*/
-        List<String> queries = Arrays.asList("metallica", "elvis");
+        List<String> queries = Arrays.asList("elvis");
 
         itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
         itemsSeeker.setLogger(this);
