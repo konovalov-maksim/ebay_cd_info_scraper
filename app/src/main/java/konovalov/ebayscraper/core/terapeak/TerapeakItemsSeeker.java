@@ -3,6 +3,7 @@ package konovalov.ebayscraper.core.terapeak;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import konovalov.ebayscraper.core.Condition;
@@ -15,6 +16,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,11 +28,10 @@ public class TerapeakItemsSeeker {
     private final OkHttpClient client = HttpClient.getInstance();
     private Logger logger;
     private HttpUrl preparedUrl;
+    private int dayRange = 90;
     private ResultsLoadingListener resultsLoadingListener;
 
     private final String BASE_URL = "https://www.ebay.com/sh/research/api/search";
-//    private final String BASE_URL = "https://www.ebay.com/sh/research/api/search" +
-//        "?condition=NEW&dayRange=CUSTOM&endDate=1604127600000&keywords=metallica&marketplace=EBAY-US&startDate=1601535600000&tabName=SOLD";
 
     private boolean isRunning = false;
     private int threads;
@@ -40,9 +41,6 @@ public class TerapeakItemsSeeker {
     private final Condition condition;
     private String categoryId = null;
 
-    private final int MAX_ITEMS_PER_PAGE = 50;
-    private final int MAX_PAGE_NUMBER = 100;
-    private int itemsLimit = MAX_ITEMS_PER_PAGE * MAX_PAGE_NUMBER;
     private int maxThreads = 6;
     private long timeout = 10000;
 
@@ -178,10 +176,11 @@ public class TerapeakItemsSeeker {
         double avgListingPrice = Double.parseDouble(avgListingPriceStr.replaceAll("[^\\d.]", ""));
         result.setAvgListingPrice(avgListingPrice);
 
-        String totalActiveStr = categoryJson
+        JsonArray breadcrumbs = categoryJson
                 .get("primaryCategories").getAsJsonObject()
-                .get("categoryCount").getAsJsonArray()
-                .get(0).getAsJsonObject()
+                .get("categoryCount").getAsJsonArray();
+        String totalActiveStr = breadcrumbs.get(breadcrumbs.size() - 1)
+                .getAsJsonObject()
                 .get("text").getAsString();
         int totalActiveItems = Integer.parseInt(totalActiveStr.replaceAll("[^\\d]", ""));
         result.setTotalActive(totalActiveItems);
@@ -199,8 +198,6 @@ public class TerapeakItemsSeeker {
         resultsLoadingListener.onAllResultsReceived();
     }
 
-
-
     //Preparing URL with get parameters
     private void prepareUrl() {
         HttpUrl httpUrl = HttpUrl.parse(BASE_URL);
@@ -208,26 +205,22 @@ public class TerapeakItemsSeeker {
             log("Unable to detect base url");
             return;
         }
-        //https://www.ebay.com/sh/research
-        // ?dayRange=90
-        // &endDate=1604490339029
-        // &keywords=metallica
-        // &marketplace=EBAY-US
-        // &offset=0
-        // &queryCondition=AND
-        // &startDate=1596800739029
-        // &tabName=SOLD
-        // &categoryId=2984
+
+        Calendar endDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.DAY_OF_YEAR, - dayRange + 1);
 
         HttpUrl.Builder urlBuilder = httpUrl.newBuilder()
-                .addQueryParameter("dayRange", "90")
                 .addQueryParameter("marketplace", "EBAY-US")
-                ;
+                .addQueryParameter("dayRange", String.valueOf(dayRange))
+                .addQueryParameter("startDate", String.valueOf(startDate.getTimeInMillis()))
+                .addQueryParameter("endDate", String.valueOf(endDate.getTimeInMillis()))
+        ;
 
         if (condition.equals(Condition.NEW)) {
-            urlBuilder.addQueryParameter("Condition", "NEW"); //New with defects
+            urlBuilder.addQueryParameter("condition", "NEW"); //New with defects
         } else if (condition.equals(Condition.USED)) {
-            urlBuilder.addQueryParameter("Condition", "USED");
+            urlBuilder.addQueryParameter("condition", "USED");
         }
         //Category filter
         if (categoryId != null) urlBuilder.addQueryParameter("categoryId", categoryId);
@@ -264,15 +257,6 @@ public class TerapeakItemsSeeker {
         this.maxThreads = maxThreads;
     }
 
-    public int getItemsLimit() {
-        return itemsLimit;
-    }
-
-    public void setItemsLimit(int itemsLimit) {
-        if (itemsLimit > MAX_ITEMS_PER_PAGE * MAX_PAGE_NUMBER) this.itemsLimit = MAX_ITEMS_PER_PAGE * MAX_PAGE_NUMBER;
-        else this.itemsLimit = itemsLimit;
-    }
-
     public long getTimeout() {
         return timeout;
     }
@@ -294,5 +278,13 @@ public class TerapeakItemsSeeker {
             this.categoryId = null;
         else
             this.categoryId = categoryId;
+    }
+
+    public int getDayRange() {
+        return dayRange;
+    }
+
+    public void setDayRange(int dayRange) {
+        this.dayRange = dayRange;
     }
 }

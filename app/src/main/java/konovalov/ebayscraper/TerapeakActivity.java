@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import konovalov.ebayscraper.core.*;
 import konovalov.ebayscraper.core.entities.Release;
-import konovalov.ebayscraper.core.entities.Result;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 import konovalov.ebayscraper.core.terapeak.TerapeakItemsSeeker;
 
@@ -39,7 +38,7 @@ public class TerapeakActivity extends AppCompatActivity implements
     private Spinner threadsSpn;
     private Spinner conditionSpn;
     private Spinner subcategorySpn;
-    private EditText itemsLimitEt;
+    private EditText dayRangeEt;
     private EditText inputQueriesEt;
     private EditText upcEt;
     private TextView categoryTv;
@@ -93,7 +92,7 @@ public class TerapeakActivity extends AppCompatActivity implements
         threadsSpn = findViewById(R.id.threadsSpn);
         conditionSpn = findViewById(R.id.conditionSpn);
         subcategorySpn = findViewById(R.id.subcategorySpn);
-        itemsLimitEt = findViewById(R.id.itemsLimitTf);
+        dayRangeEt = findViewById(R.id.dayRangeEt);
         categoryTv = findViewById(R.id.categoryTv);
 
         upcPb = findViewById(R.id.upcPb);
@@ -127,7 +126,7 @@ public class TerapeakActivity extends AppCompatActivity implements
         conditionSpn.setAdapter(ArrayAdapter.createFromResource(this, R.array.conditions, android.R.layout.simple_spinner_dropdown_item));
 
         sPref = getPreferences(MODE_PRIVATE);
-        itemsLimitEt.setText(String.valueOf(sPref.getInt("itemsLimit", 250)));
+        dayRangeEt.setText(String.valueOf(sPref.getInt("dayRange", 90)));
         threadsSpn.setSelection(sPref.getInt("maxThreads", 5));
 
         setMinimized(false);
@@ -159,7 +158,7 @@ public class TerapeakActivity extends AppCompatActivity implements
             return;
         }
         List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));*/
-        List<String> queries = Arrays.asList("elvis", "metallica");
+        List<String> queries = Arrays.asList("metallica");
 
         itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
         itemsSeeker.setLogger(this);
@@ -167,10 +166,10 @@ public class TerapeakActivity extends AppCompatActivity implements
         sPrefEditor = sPref.edit();
         sPrefEditor.putInt("maxThreads", threadsSpn.getSelectedItemPosition());
         try {
-            if (itemsLimitEt.getText() != null && itemsLimitEt.getText().length() > 0) {
-                int itemsLimit = Integer.parseInt(itemsLimitEt.getText().toString());
-                sPrefEditor.putInt("itemsLimit", itemsLimit);
-                itemsSeeker.setItemsLimit(itemsLimit);
+            if (dayRangeEt.getText() != null && dayRangeEt.getText().length() > 0) {
+                int dayRange = Integer.parseInt(dayRangeEt.getText().toString());
+                sPrefEditor.putInt("dayRange", dayRange);
+                itemsSeeker.setDayRange(dayRange);
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, getString(R.string.incorrect_items_limit), Toast.LENGTH_SHORT).show();
