@@ -35,7 +35,7 @@ public class ItemActive implements Serializable {
     }
 
     public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+        this.imgUrl = imgUrl.replaceAll("^//", "https://");
     }
 
     public String getFormat() {

@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/itemIv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/options" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:lines="2"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
+        app:layout_constraintTop_toTopOf="@+id/itemIv"
+        tools:text="ESP TRUCKSTER METALL"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/formatTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/listingPriceTv"
+        app:layout_constraintStart_toStartOf="@+id/titleTv"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        tools:text="Fixed price" />
+
+    <TextView
+        android:id="@+id/listingPriceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/shippingTv"
+        app:layout_constraintStart_toStartOf="@+id/formatTv"
+        app:layout_constraintTop_toBottomOf="@+id/formatTv"
+        tools:text="$ 100500" />
+
+    <TextView
+        android:id="@+id/shippingTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/listingPriceTv"
+        app:layout_constraintTop_toBottomOf="@+id/listingPriceTv"
+        tools:text="Free shipping" />
+
+    <TextView
+        android:id="@+id/bidsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/watchersTv"
+        app:layout_constraintEnd_toEndOf="@+id/titleTv"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        tools:text="Bids: 2" />
+
+    <TextView
+        android:id="@+id/watchersTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/startDateTv"
+        app:layout_constraintEnd_toEndOf="@+id/bidsTv"
+        app:layout_constraintTop_toBottomOf="@+id/bidsTv"
+        tools:text="Watchers: 2" />
+
+    <TextView
+        android:id="@+id/startDateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/watchersTv"
+        app:layout_constraintTop_toBottomOf="@+id/watchersTv"
+        tools:text="Oct 23, 2020" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

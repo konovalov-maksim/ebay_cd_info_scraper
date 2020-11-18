@@ -53,5 +53,7 @@
     <string name="incorrect_items_limit">Incorrect items limit!</string>
     <string name="needs_camera_permission">Please grant camera permission to use the barcode scanner</string>
 
+    <string name="bids">Bids: %1$s</string>
+    <string name="watches">Watches: %1$s</string>
 
 </resources>
