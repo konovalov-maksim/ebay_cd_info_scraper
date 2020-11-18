@@ -17,7 +17,7 @@
     <string name="input_queries">Input queries:</string>
     <string name="upc">UPC:</string>
     <string name="items_limit">Items limit:</string>
-    <string name="day_range">Range od days:</string>
+    <string name="day_range">Range of days:</string>
     <string name="max_threads">Max threads:</string>
     <string name="category">Category:</string>
     <string name="subcategory">Subcategory:</string>

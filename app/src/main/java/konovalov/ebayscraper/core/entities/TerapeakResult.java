@@ -93,7 +93,7 @@ public class TerapeakResult {
     @Nullable
     public Double getSoldRatio() {
         try {
-            return round(totalSold * 1.0 / totalActive, 2);
+            return round(totalSold * 100.0 / totalActive, 2);
         } catch (Exception e) {
             return null;
         }
