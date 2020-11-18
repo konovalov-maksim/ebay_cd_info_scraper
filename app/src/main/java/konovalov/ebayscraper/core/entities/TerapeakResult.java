@@ -1,5 +1,11 @@
 package konovalov.ebayscraper.core.entities;
 
+import androidx.annotation.Nullable;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Objects;
+
 public class TerapeakResult {
 
     private final String query;
@@ -8,7 +14,7 @@ public class TerapeakResult {
     private Integer totalSold;
     private Integer totalActive;
     private Double selfThrough;
-    private Status status;
+    private Status status = Status.NEW;
     private boolean isSoldInfoSet = false;
     private boolean isActiveInfoSet = false;
 
@@ -82,5 +88,72 @@ public class TerapeakResult {
 
     public void setActiveInfoSet(boolean activeInfoSet) {
         isActiveInfoSet = activeInfoSet;
+    }
+
+    @Nullable
+    public Double getSoldRatio() {
+        try {
+            return round(totalSold * 1.0 / totalActive, 2);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    //the formula for "Current Value" is (Avg sold price) * (1+sell-through)
+    @Nullable
+    public Double getCurValue() {
+        try {
+            return round(avgSoldPrice * (1 + selfThrough), 2);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getStatusString() {
+        return status.statusName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TerapeakResult result = (TerapeakResult) o;
+        return isSoldInfoSet == result.isSoldInfoSet &&
+                isActiveInfoSet == result.isActiveInfoSet &&
+                Objects.equals(query, result.query) &&
+                Objects.equals(avgSoldPrice, result.avgSoldPrice) &&
+                Objects.equals(avgListingPrice, result.avgListingPrice) &&
+                Objects.equals(totalSold, result.totalSold) &&
+                Objects.equals(totalActive, result.totalActive) &&
+                Objects.equals(selfThrough, result.selfThrough) &&
+                status == result.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(query, avgSoldPrice, avgListingPrice, totalSold, totalActive, selfThrough, status, isSoldInfoSet, isActiveInfoSet);
+    }
+
+    @Override
+    public String toString() {
+        return "TerapeakResult{" +
+                "query='" + query + '\'' +
+                ", avgSoldPrice=" + avgSoldPrice +
+                ", avgListingPrice=" + avgListingPrice +
+                ", totalSold=" + totalSold +
+                ", totalActive=" + totalActive +
+                ", selfThrough=" + selfThrough +
+                ", status=" + status +
+                ", isSoldInfoSet=" + isSoldInfoSet +
+                ", isActiveInfoSet=" + isActiveInfoSet +
+                '}';
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

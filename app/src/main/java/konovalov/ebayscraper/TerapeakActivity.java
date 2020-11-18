@@ -67,11 +67,11 @@ public class TerapeakActivity extends AppCompatActivity implements
     private boolean isMinimized;
 
 
-    private final List<Result> results = new ArrayList<>();
+    private final List<TerapeakResult> results = new ArrayList<>();
     private final Set<String> resultsSet = new HashSet<>();
     private final List<String> notFoundUpcs = new ArrayList<>();
 
-    private ResultAdapter adapter;
+    private TerapeakResultAdapter adapter;
 
     private SharedPreferences sPref;
     private SharedPreferences.Editor sPrefEditor;
@@ -117,7 +117,7 @@ public class TerapeakActivity extends AppCompatActivity implements
         optionsCl = findViewById(R.id.optionsCl);
         optionsCl.setVisibility(View.GONE);
 
-        adapter = new ResultAdapter(results, this);
+        adapter = new TerapeakResultAdapter(results, this);
         ((RecyclerView) findViewById(R.id.resultsRv)).setAdapter(adapter);
 
         Category.setAppName(appName);
@@ -159,7 +159,7 @@ public class TerapeakActivity extends AppCompatActivity implements
             return;
         }
         List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));*/
-        List<String> queries = Arrays.asList("elvis");
+        List<String> queries = Arrays.asList("elvis", "metallica");
 
         itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
         itemsSeeker.setLogger(this);
@@ -285,11 +285,11 @@ public class TerapeakActivity extends AppCompatActivity implements
     @Override
     public void onResultReceived(TerapeakResult result) {
         Log.d("seeker", "Result received in activity: " + result);
-        /*        if (!resultsSet.contains(result.getQuery())) {
+        if (!resultsSet.contains(result.getQuery())) {
             resultsSet.add(result.getQuery());
             results.add(result);
         }
-        refreshAdapter();*/
+        refreshAdapter();
     }
 
     @Override
