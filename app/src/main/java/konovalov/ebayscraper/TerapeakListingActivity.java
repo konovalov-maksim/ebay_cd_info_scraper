@@ -69,22 +69,22 @@ public class TerapeakListingActivity extends AppCompatActivity {
 
     private void showActiveItems() {
         soldItemsCl.setVisibility(View.GONE);
-        soldBtn.setBackground(null);
+        soldBtn.setBackgroundResource(R.drawable.bg_btn_tab);
         soldBtn.setTypeface(null, Typeface.NORMAL);
 
         activeItemsCl.setVisibility(View.VISIBLE);
-        activeBtn.setBackgroundResource(R.drawable.bg_btn_tab);
+        activeBtn.setBackgroundResource(R.drawable.bg_btn_tab_active);
         activeBtn.setTypeface(null, Typeface.BOLD);
 
     }
 
     private void showSoldItems() {
         soldItemsCl.setVisibility(View.VISIBLE);
-        soldBtn.setBackgroundResource(R.drawable.bg_btn_tab);
+        soldBtn.setBackgroundResource(R.drawable.bg_btn_tab_active);
         soldBtn.setTypeface(null, Typeface.BOLD);
 
         activeItemsCl.setVisibility(View.GONE);
-        activeBtn.setBackground(null);
+        activeBtn.setBackgroundResource(R.drawable.bg_btn_tab);
         activeBtn.setTypeface(null, Typeface.NORMAL);
 
     }
