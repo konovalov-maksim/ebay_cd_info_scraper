@@ -2,6 +2,7 @@ package konovalov.ebayscraper.core;
 
 import android.util.Log;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -38,6 +39,10 @@ public class TerapeakAuthenticator {
                 .header("Cookie", cookieHeaderValue)
                 .build();
         client.newCall(request).enqueue(checkLoginCallbackApi);
+    }
+
+    public void logOut() {
+        ((ClearableCookieJar) client.cookieJar()).clear();
     }
 
     private final Callback checkLoginCallbackApi = new Callback() {

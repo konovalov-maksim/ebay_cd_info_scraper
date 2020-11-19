@@ -57,4 +57,45 @@
         app:layout_constraintBottom_toTopOf="@+id/ebaySearchBtn"
         app:layout_constraintEnd_toEndOf="@+id/ebaySearchBtn"
         app:layout_constraintStart_toStartOf="@+id/ebaySearchBtn" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/logoutCl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/logoutTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/log_out"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/logoutIv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/logoutIv"
+            app:layout_constraintTop_toTopOf="@+id/logoutIv" />
+
+        <ImageView
+            android:id="@+id/logoutIv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
