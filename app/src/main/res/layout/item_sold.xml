@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/itemIv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/options" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
+        app:layout_constraintTop_toTopOf="@+id/itemIv"
+        tools:text="ESP TRUCKSTER METALL" />
+
+    <TextView
+        android:id="@+id/formatTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/avgSoldPriceTv"
+        app:layout_constraintEnd_toStartOf="@+id/totalSoldTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
+        app:layout_constraintStart_toStartOf="@+id/titleTv"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        tools:text="Fixed price" />
+
+    <TextView
+        android:id="@+id/avgSoldPriceTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/shippingTv"
+        app:layout_constraintEnd_toStartOf="@+id/totalSalesTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
+        app:layout_constraintStart_toStartOf="@+id/formatTv"
+        app:layout_constraintTop_toBottomOf="@+id/formatTv"
+        tools:text="$ 100500" />
+
+    <TextView
+        android:id="@+id/shippingTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/lastSoldDateTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
+        app:layout_constraintStart_toStartOf="@+id/avgSoldPriceTv"
+        app:layout_constraintTop_toBottomOf="@+id/avgSoldPriceTv"
+        tools:text="Free shipping" />
+
+    <TextView
+        android:id="@+id/totalSoldTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/totalSalesTv"
+        app:layout_constraintEnd_toEndOf="@+id/titleTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/formatTv"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        tools:text="Total sold: 500" />
+
+    <TextView
+        android:id="@+id/totalSalesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/lastSoldDateTv"
+        app:layout_constraintEnd_toEndOf="@+id/totalSoldTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/avgSoldPriceTv"
+        app:layout_constraintTop_toBottomOf="@+id/totalSoldTv"
+        tools:text="Total sales: 100500" />
+
+    <TextView
+        android:id="@+id/lastSoldDateTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/totalSalesTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/shippingTv"
+        app:layout_constraintTop_toBottomOf="@+id/totalSalesTv"
+        tools:text="Oct 23, 2020" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

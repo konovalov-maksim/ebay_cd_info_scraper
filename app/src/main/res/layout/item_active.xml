@@ -25,69 +25,87 @@
         android:layout_marginEnd="8dp"
         android:lines="2"
         android:maxLines="2"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/itemIv"
         app:layout_constraintTop_toTopOf="@+id/itemIv"
-        tools:text="ESP TRUCKSTER METALL"
-        android:textColor="@color/colorPrimary" />
+        tools:text="ESP TRUCKSTER METALL" />
 
     <TextView
         android:id="@+id/formatTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/listingPriceTv"
+        app:layout_constraintEnd_toStartOf="@+id/bidsTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
         app:layout_constraintStart_toStartOf="@+id/titleTv"
         app:layout_constraintTop_toBottomOf="@+id/titleTv"
         tools:text="Fixed price" />
 
     <TextView
         android:id="@+id/listingPriceTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/shippingTv"
+        app:layout_constraintEnd_toStartOf="@+id/watchersTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
         app:layout_constraintStart_toStartOf="@+id/formatTv"
         app:layout_constraintTop_toBottomOf="@+id/formatTv"
         tools:text="$ 100500" />
 
     <TextView
         android:id="@+id/shippingTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/startDateTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/itemIv"
         app:layout_constraintStart_toStartOf="@+id/listingPriceTv"
         app:layout_constraintTop_toBottomOf="@+id/listingPriceTv"
         tools:text="Free shipping" />
 
     <TextView
         android:id="@+id/bidsTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/watchersTv"
         app:layout_constraintEnd_toEndOf="@+id/titleTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/formatTv"
         app:layout_constraintTop_toBottomOf="@+id/titleTv"
         tools:text="Bids: 2" />
 
     <TextView
         android:id="@+id/watchersTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/startDateTv"
         app:layout_constraintEnd_toEndOf="@+id/bidsTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/listingPriceTv"
         app:layout_constraintTop_toBottomOf="@+id/bidsTv"
         tools:text="Watchers: 2" />
 
     <TextView
         android:id="@+id/startDateTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/watchersTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/shippingTv"
         app:layout_constraintTop_toBottomOf="@+id/watchersTv"
         tools:text="Oct 23, 2020" />
 

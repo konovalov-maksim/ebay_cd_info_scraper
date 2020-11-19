@@ -55,5 +55,7 @@
 
     <string name="bids">Bids: %1$s</string>
     <string name="watches">Watches: %1$s</string>
+    <string name="total_sold">Sold: %1$s</string>
+    <string name="total_sales">Sales: %1$s</string>
 
 </resources>

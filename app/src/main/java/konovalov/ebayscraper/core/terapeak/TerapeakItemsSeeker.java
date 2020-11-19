@@ -225,7 +225,7 @@ public class TerapeakItemsSeeker {
             item.setFormat(result.getListing().getFormatList().get(0).getAccessibilityText());
             item.setAvgSoldPrice(result.getAvgsalesprice().getAvgsalesprice().getTextSpans().get(0).getText());
             item.setShipping(result.getAvgsalesprice().getAverageshipping().getTextSpans().get(0).getText());
-            item.setTotalSold(result.getTotalsales().getTextSpans().get(0).getText());
+            item.setTotalSold(result.getItemssold().getTextSpans().get(0).getText());
             item.setTotalSales(result.getTotalsales().getTextSpans().get(0).getText());
             item.setBids(result.getBids().getTextSpans().get(0).getText());
             item.setLastSold(result.getDatelastsold().getTextSpans().get(0).getText());

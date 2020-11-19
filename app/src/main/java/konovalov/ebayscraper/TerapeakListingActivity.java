@@ -11,12 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import konovalov.ebayscraper.core.ItemsActiveAdapter;
+import konovalov.ebayscraper.core.ItemsSoldAdapter;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 
 public class TerapeakListingActivity extends AppCompatActivity {
 
     private TerapeakResult result;
     private ItemsActiveAdapter itemsActiveAdapter;
+    private ItemsSoldAdapter itemsSoldAdapter;
     private ConstraintLayout soldItemsCl, activeItemsCl;
 
     private TextView soldBtn, activeBtn;
@@ -63,8 +65,8 @@ public class TerapeakListingActivity extends AppCompatActivity {
         itemsActiveAdapter = new ItemsActiveAdapter(result.getActiveItems(), this);
         ((RecyclerView) findViewById(R.id.activeItemsRv)).setAdapter(itemsActiveAdapter);
 
-
-//        ((RecyclerView) findViewById(R.id.soldItemsRv)).setAdapter();
+        itemsSoldAdapter = new ItemsSoldAdapter(result.getSoldItems(), this);
+        ((RecyclerView) findViewById(R.id.soldItemsRv)).setAdapter(itemsSoldAdapter);
     }
 
     private void showActiveItems() {
