@@ -14,6 +14,7 @@ import java.util.List;
 
 import konovalov.ebayscraper.R;
 import konovalov.ebayscraper.TerapeakListingActivity;
+import konovalov.ebayscraper.core.entities.Status;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 
 public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAdapter.ViewHolder> {
@@ -76,6 +77,7 @@ public class TerapeakResultAdapter extends RecyclerView.Adapter<TerapeakResultAd
     }
 
     private void showResultListing(TerapeakResult result) {
+        if (!result.getStatus().equals(Status.COMPLETED)) return;
         Intent intent = new Intent(context, TerapeakListingActivity.class);
         intent.putExtra("result", result);
         context.startActivity(intent);
