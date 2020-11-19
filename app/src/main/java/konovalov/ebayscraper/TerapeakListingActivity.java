@@ -1,6 +1,7 @@
 package konovalov.ebayscraper;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -68,12 +69,24 @@ public class TerapeakListingActivity extends AppCompatActivity {
 
     private void showActiveItems() {
         soldItemsCl.setVisibility(View.GONE);
+        soldBtn.setBackground(null);
+        soldBtn.setTypeface(null, Typeface.NORMAL);
+
         activeItemsCl.setVisibility(View.VISIBLE);
+        activeBtn.setBackgroundResource(R.drawable.bg_btn_tab);
+        activeBtn.setTypeface(null, Typeface.BOLD);
+
     }
 
     private void showSoldItems() {
         soldItemsCl.setVisibility(View.VISIBLE);
+        soldBtn.setBackgroundResource(R.drawable.bg_btn_tab);
+        soldBtn.setTypeface(null, Typeface.BOLD);
+
         activeItemsCl.setVisibility(View.GONE);
+        activeBtn.setBackground(null);
+        activeBtn.setTypeface(null, Typeface.NORMAL);
+
     }
 
 
@@ -81,6 +94,5 @@ public class TerapeakListingActivity extends AppCompatActivity {
         if (value == null) return "n/a";
         else return String.valueOf(value);
     }
-
 
 }
