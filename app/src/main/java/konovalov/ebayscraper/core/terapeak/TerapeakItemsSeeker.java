@@ -77,6 +77,7 @@ public class TerapeakItemsSeeker {
             HttpUrl soldItemsUrl = preparedUrl.newBuilder()
                     .addQueryParameter("keywords", query)
                     .addQueryParameter("tabName", "SOLD")
+                    .addQueryParameter("sorting", "-avgsalesprice")
                     .build();
             Request soldItemsRequest = new Request.Builder()
                     .url(soldItemsUrl)
@@ -89,6 +90,7 @@ public class TerapeakItemsSeeker {
             HttpUrl activeItemsUrl = preparedUrl.newBuilder()
                     .addQueryParameter("keywords", query)
                     .addQueryParameter("tabName", "ACTIVE")
+                    .addQueryParameter("sorting", "-listingPrice")
                     .build();
             Request activeItemsRequest = new Request.Builder()
                     .url(activeItemsUrl)
@@ -277,7 +279,6 @@ public class TerapeakItemsSeeker {
 
         HttpUrl.Builder urlBuilder = httpUrl.newBuilder()
                 .addQueryParameter("marketplace", "EBAY-US")
-                .addQueryParameter("sorting", "-avgsalesprice")
                 .addQueryParameter("dayRange", String.valueOf(dayRange))
                 .addQueryParameter("startDate", String.valueOf(startDate.getTimeInMillis()))
                 .addQueryParameter("endDate", String.valueOf(endDate.getTimeInMillis()))
