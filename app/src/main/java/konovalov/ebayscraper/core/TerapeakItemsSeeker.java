@@ -1,4 +1,4 @@
-package konovalov.ebayscraper.core.terapeak;
+package konovalov.ebayscraper.core;
 
 import android.util.Log;
 
@@ -35,7 +35,7 @@ public class TerapeakItemsSeeker {
     private Logger logger;
     private HttpUrl preparedUrl;
     private int dayRange = 90;
-    private ResultsLoadingListener resultsLoadingListener;
+    private final ResultsLoadingListener resultsLoadingListener;
 
     private final String BASE_URL = "https://www.ebay.com/sh/research/api/search";
 
@@ -50,7 +50,7 @@ public class TerapeakItemsSeeker {
     private int maxThreads = 6;
     private long timeout = 10000;
 
-    private LinkedHashMap<String, TerapeakResult> results = new LinkedHashMap<>(); //Here stored all found results without duplicates
+    private final LinkedHashMap<String, TerapeakResult> results = new LinkedHashMap<>(); //Here stored all found results without duplicates
 
     public TerapeakItemsSeeker(List<String> queries, Condition condition, ResultsLoadingListener resultsLoadingListener) {
         unprocessed.addAll(queries.stream().distinct().collect(Collectors.toList()));

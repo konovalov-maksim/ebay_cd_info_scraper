@@ -1,4 +1,4 @@
-package konovalov.ebayscraper.core.ebay;
+package konovalov.ebayscraper.core;
 
 import konovalov.ebayscraper.core.Condition;
 import konovalov.ebayscraper.core.Logger;

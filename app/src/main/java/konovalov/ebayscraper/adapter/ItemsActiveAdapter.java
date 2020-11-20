@@ -1,4 +1,4 @@
-package konovalov.ebayscraper.core;
+package konovalov.ebayscraper.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,15 +15,15 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import konovalov.ebayscraper.R;
-import konovalov.ebayscraper.core.entities.ItemSold;
+import konovalov.ebayscraper.core.entities.ItemActive;
 
-public class ItemsSoldAdapter extends RecyclerView.Adapter<ItemsSoldAdapter.ViewHolder> {
+public class ItemsActiveAdapter extends RecyclerView.Adapter<ItemsActiveAdapter.ViewHolder> {
 
     private final LayoutInflater inflater;
-    private final List<ItemSold> items;
+    private final List<ItemActive> items;
     private final Context context;
 
-    public ItemsSoldAdapter(List<ItemSold> items, Context context) {
+    public ItemsActiveAdapter(List<ItemActive> items, Context context) {
         this.items = items;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -32,20 +32,20 @@ public class ItemsSoldAdapter extends RecyclerView.Adapter<ItemsSoldAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_sold, parent, false);
+        View view = inflater.inflate(R.layout.item_active, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ItemSold item = items.get(position);
+        ItemActive item = items.get(position);
         holder.titleTv.setText(item.getTitle());
         holder.formatTv.setText(item.getFormat());
-        holder.avgSoldPriceTv.setText(item.getAvgSoldPrice());
+        holder.listingPriceTv.setText(item.getListingPrice());
         holder.shippingTv.setText(item.getShipping());
-        holder.totalSoldTv.setText(context.getString(R.string.total_sold, item.getTotalSold()));
-        holder.totalSalesTv.setText(context.getString(R.string.total_sales, item.getTotalSales()));
-        holder.lastSoldDateTv.setText(item.getLastSold());
+        holder.bidsTv.setText(context.getString(R.string.bids, item.getBids()));
+        holder.watchersTv.setText(context.getString(R.string.watches, item.getWatchers()));
+        holder.startDateTv.setText(item.getStartDate());
         Glide.with(context).load(item.getImgUrl()).into(holder.itemIv);
     }
 
@@ -56,18 +56,18 @@ public class ItemsSoldAdapter extends RecyclerView.Adapter<ItemsSoldAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView titleTv, formatTv, avgSoldPriceTv, shippingTv, totalSoldTv, totalSalesTv, lastSoldDateTv;
+        final TextView titleTv, formatTv, listingPriceTv, shippingTv, bidsTv, watchersTv, startDateTv;
         final ImageView itemIv;
 
         ViewHolder(View view){
             super(view);
             titleTv = view.findViewById(R.id.titleTv);
             formatTv = view.findViewById(R.id.formatTv);
-            avgSoldPriceTv = view.findViewById(R.id.avgSoldPriceTv);
+            listingPriceTv = view.findViewById(R.id.listingPriceTv);
             shippingTv = view.findViewById(R.id.shippingTv);
-            totalSoldTv = view.findViewById(R.id.totalSoldTv);
-            totalSalesTv = view.findViewById(R.id.totalSalesTv);
-            lastSoldDateTv = view.findViewById(R.id.lastSoldDateTv);
+            bidsTv = view.findViewById(R.id.bidsTv);
+            watchersTv = view.findViewById(R.id.watchersTv);
+            startDateTv = view.findViewById(R.id.startDateTv);
             itemIv = view.findViewById(R.id.itemIv);
         }
     }

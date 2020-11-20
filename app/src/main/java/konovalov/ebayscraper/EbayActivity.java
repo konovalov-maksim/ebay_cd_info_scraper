@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
 
 import konovalov.ebayscraper.core.Category;
 import konovalov.ebayscraper.core.Condition;
-import konovalov.ebayscraper.core.ebay.ItemsSeeker;
+import konovalov.ebayscraper.core.ItemsSeeker;
 import konovalov.ebayscraper.core.Logger;
-import konovalov.ebayscraper.core.ResultAdapter;
+import konovalov.ebayscraper.adapter.ResultAdapter;
 import konovalov.ebayscraper.core.UpcConvertor;
 import konovalov.ebayscraper.core.entities.Release;
 import konovalov.ebayscraper.core.entities.Result;

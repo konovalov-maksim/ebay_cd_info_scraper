@@ -19,10 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import konovalov.ebayscraper.adapter.TerapeakResultAdapter;
 import konovalov.ebayscraper.core.*;
 import konovalov.ebayscraper.core.entities.Release;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
-import konovalov.ebayscraper.core.terapeak.TerapeakItemsSeeker;
+import konovalov.ebayscraper.core.TerapeakItemsSeeker;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -152,13 +153,11 @@ public class TerapeakActivity extends AppCompatActivity implements
     }
 
     private void startSearch() {
-        //TODO uncomment
-/*        if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
+        if (inputQueriesEt.getText() == null || inputQueriesEt.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.no_queries), Toast.LENGTH_SHORT).show();
             return;
         }
-        List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));*/
-        List<String> queries = Arrays.asList("metallica");
+        List<String> queries = Arrays.asList(inputQueriesEt.getText().toString().split("\\r?\\n"));
 
         itemsSeeker = new TerapeakItemsSeeker(queries, getCondition(), this);
         itemsSeeker.setLogger(this);

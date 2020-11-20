@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import konovalov.ebayscraper.core.ItemsActiveAdapter;
-import konovalov.ebayscraper.core.ItemsSoldAdapter;
+import konovalov.ebayscraper.adapter.ItemsActiveAdapter;
+import konovalov.ebayscraper.adapter.ItemsSoldAdapter;
 import konovalov.ebayscraper.core.entities.TerapeakResult;
 
 public class TerapeakListingActivity extends AppCompatActivity {

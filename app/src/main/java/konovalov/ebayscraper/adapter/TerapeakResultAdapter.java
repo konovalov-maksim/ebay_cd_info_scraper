@@ -1,4 +1,4 @@
-package konovalov.ebayscraper.core;
+package konovalov.ebayscraper.adapter;
 
 import android.content.Context;
 import android.content.Intent;
