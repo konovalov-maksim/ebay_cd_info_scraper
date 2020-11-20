@@ -7,14 +7,11 @@
 
     <string name="ebay_search">Classic Ebay search</string>
     <string name="terapeak_search">Terapeak search</string>
-    <string name="trying_to_login">Trying to login…</string>
-    <string name="log_out">Log out</string>
-
-    <string name="login">Login</string>
-    <string name="password">Password</string>
-    <string name="countinue">Continue</string>
-    <string name="falied_to_login">Failed to log in</string>
+    <string name="login_status_update">Login status update…</string>
+    <string name="logged_in_as">Logged in as %1$s</string>
     <string name="not_logged_in">Not logged in</string>
+    <string name="log_in">Log in</string>
+    <string name="log_out">Log out</string>
 
     <string name="input_queries">Input queries:</string>
     <string name="upc">UPC:</string>

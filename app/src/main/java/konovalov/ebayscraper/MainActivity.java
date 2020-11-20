@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import konovalov.ebayscraper.core.HttpClient;
 import konovalov.ebayscraper.core.TerapeakAuthenticator;
@@ -17,9 +16,9 @@ import konovalov.ebayscraper.core.TerapeakAuthenticator;
 public class MainActivity extends AppCompatActivity {
 
     private Button ebayBtn, terapeakBtn;
-    private ProgressBar loginPb;
-    private TextView tryingToLoginTv;
-    private ConstraintLayout logoutCl;
+    private ProgressBar accountPb;
+    private TextView accountTv;
+    private Button loginBtn, logoutBtn;
 
     private TerapeakAuthenticator authenticator;
 
@@ -29,49 +28,73 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         HttpClient.init(this);
+        authenticator = new TerapeakAuthenticator();
 
         findViews();
         setListeners();
 
+        refreshLoginStatus();
     }
 
     private void findViews() {
         ebayBtn = findViewById(R.id.ebaySearchBtn);
         terapeakBtn = findViewById(R.id.terapeakSearchBtn);
-        loginPb = findViewById(R.id.loginPb);
-        tryingToLoginTv = findViewById(R.id.tryingToLoginTv);
-        logoutCl = findViewById(R.id.logoutCl);
+        accountPb = findViewById(R.id.accountPb);
+        accountTv = findViewById(R.id.accountTv);
+        loginBtn = findViewById(R.id.loginBtn);
+        logoutBtn = findViewById(R.id.logoutBtn);
     }
 
     private void setListeners() {
-        authenticator = new TerapeakAuthenticator(this::onLoginStatusReceived);
         ebayBtn.setOnClickListener(v -> startActivity(new Intent(this, EbayActivity.class)));
-        logoutCl.setOnClickListener(v -> authenticator.logOut());
-        terapeakBtn.setOnClickListener(v -> checkIfLoggedIn());
+        terapeakBtn.setOnClickListener(v -> startActivity(new Intent(this, TerapeakActivity.class)));
+        loginBtn.setOnClickListener(v -> startLoginActivity());
+        logoutBtn.setOnClickListener(v -> logout());
     }
 
-    private void checkIfLoggedIn() {
-        loginPb.setVisibility(View.VISIBLE);
-        tryingToLoginTv.setVisibility(View.VISIBLE);
-        ebayBtn.setEnabled(false);
+    private void refreshLoginStatus() {
         terapeakBtn.setEnabled(false);
+        loginBtn.setVisibility(View.GONE);
+        logoutBtn.setVisibility(View.GONE);
+        accountPb.setVisibility(View.VISIBLE);
+        accountTv.setText(R.string.login_status_update);
 
-        authenticator.checkIfLoggedIn();
+        authenticator.getLogin(this::onLoginReceived);
     }
 
-    private void onLoginStatusReceived(boolean isLoggedIn) {
+    private void onLoginReceived(String login) {
         runOnUiThread(() -> {
-            loginPb.setVisibility(View.INVISIBLE);
-            tryingToLoginTv.setVisibility(View.INVISIBLE);
-            ebayBtn.setEnabled(true);
-            terapeakBtn.setEnabled(true);
-            if (isLoggedIn)
-                startActivity(new Intent(this, TerapeakActivity.class));
-            else {
-                Intent intent = new Intent(this, LoginAcivity.class);
-                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
+            if (login != null) {
+                terapeakBtn.setEnabled(true);
+                loginBtn.setVisibility(View.GONE);
+                logoutBtn.setVisibility(View.VISIBLE);
+                accountPb.setVisibility(View.INVISIBLE);
+                accountTv.setText(getString(R.string.logged_in_as, login));
+            } else {
+                terapeakBtn.setEnabled(false);
+                loginBtn.setVisibility(View.VISIBLE);
+                logoutBtn.setVisibility(View.GONE);
+                accountPb.setVisibility(View.INVISIBLE);
+                accountTv.setText(R.string.not_logged_in);
             }
         });
     }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginAcivity.class);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        refreshLoginStatus();
+    }
+
+    private void logout() {
+        authenticator.logOut();
+        refreshLoginStatus();
+    }
+
 }

@@ -1,6 +1,7 @@
 package konovalov.ebayscraper;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.webkit.WebView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import konovalov.ebayscraper.core.TerapeakAuthenticator;
+import me.dm7.barcodescanner.zbar.Result;
 
 public class LoginAcivity extends AppCompatActivity {
 
@@ -25,7 +27,8 @@ public class LoginAcivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        authenticator = new TerapeakAuthenticator(this::onLoginStatusReceived);
+        authenticator = new TerapeakAuthenticator();
+        authenticator.setLoginStatusListener(this::onLoginStatusReceived);
         webViewClient = new LoginWebViewClient(authenticator::checkIfLoggedIn, securedPageUrl);
 
         loginWv = findViewById(R.id.loginWv);
@@ -39,10 +42,9 @@ public class LoginAcivity extends AppCompatActivity {
     }
 
     private void onLoginStatusReceived(boolean isLoggedIn) {
-        if (isLoggedIn)
-            startActivity(new Intent(this, TerapeakActivity.class));
-        else
-            tryToLogin();
+        Intent returnIntent = new Intent();
+        setResult(isLoggedIn ? 1 : 0, returnIntent);
+        finish();
     }
 
 }
